@@ -11,6 +11,7 @@
       --stroke: rgba(255, 255, 255, 0.14);
       --text2: rgba(255, 255, 255, 0.70);
       --babyblue: rgba(90, 221, 255, 0.92);
+      --alert: rgba(255, 86, 98, 0.92);
     }
 
     html, body { height: 100%; }
@@ -51,14 +52,28 @@
       background: rgba(255, 255, 255, 0.03);
     }
 
-    .status {
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text2);
-      font-size: 13px;
+    .emergency-bar {
+      display: none;
+      padding: 10px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+      background: linear-gradient(135deg, rgba(255, 86, 98, 0.15), rgba(255, 86, 98, 0.05));
+      color: rgba(255, 255, 255, 0.90);
+      font-weight: 750;
     }
+    .emergency-bar.active { display: block; }
+
+    .cta {
+      margin-top: 12px;
+      border: 0;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 750;
+      font-size: 14px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #5addee, #ab78ff);
+      color: #060a18;
+    }
+    .cta.small { margin-top: 0; padding: 8px 12px; font-size: 13px; }
 
     .shell {
       display: flex;
@@ -104,18 +119,6 @@
 
     .jumbotron h2 { margin: 0 0 8px 0; font-size: 20px; letter-spacing: 0.4px; }
     .jumbotron p { margin: 0; color: rgba(255, 255, 255, 0.85); line-height: 1.45; font-size: 14px; }
-
-    .cta {
-      margin-top: 12px;
-      border: 0;
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-weight: 750;
-      font-size: 14px;
-      cursor: pointer;
-      background: linear-gradient(135deg, #5addee, #ab78ff);
-      color: #060a18;
-    }
 
     .ticker {
       background: var(--panel);
@@ -178,9 +181,7 @@
       text-align: center;
     }
 
-    .wide-section {
-      padding: 0 14px 28px;
-    }
+    .wide-section { padding: 0 14px 28px; }
 
     .wide-section .card { max-width: 980px; margin: 0 auto; }
 
@@ -223,18 +224,25 @@
   <header class="topbar">
     <h1>Civic Hub</h1>
     <nav class="primary" aria-label="Primary navigation">
-      <a href="#hub">Hub</a>
+      <a href="#hub">Home</a>
       <a href="#issues">Issues</a>
-      <a href="#signup">Sign up</a>
-      <a href="#sections">Sections</a>
+      <a href="#debate">Live Debate</a>
+      <a href="#community">Community</a>
+      <a href="#petitions">Petitions</a>
+      <a href="#crisis">Emergency Guidance</a>
+      <a href="#about">About</a>
     </nav>
-    <div class="status">Prototype</div>
+    <button class="cta small" type="button" onclick="scrollToSection('issues')">Post Issue</button>
   </header>
+
+  <div id="emergencyBar" class="emergency-bar" role="alert">
+    🚨 No active emergency. Pick a crisis scenario below to activate guidance.
+  </div>
 
   <main id="hub" class="shell" aria-label="Civic Hub layout">
     <section class="panel">
       <div class="video-card">
-        <h3>Feed A (browser stream)</h3>
+        <h3>Live Debate — Position A</h3>
         <video id="feedA" class="video" autoplay muted playsinline></video>
         <p class="hint">Allow camera access to preview in this slot.</p>
       </div>
@@ -244,11 +252,12 @@
       <div class="jumbotron" role="region" aria-label="Jumbotron">
         <h2>Community Signal</h2>
         <p>
-          Highlight an alert, petition, or call-to-action. This is the “welcome
-          moment” for citizens.
+          Civic Hub is the citizen-facing layer: actions first, voice next.
+          When Crisis Mode activates, guidance takes over—clear, local, and
+          usable.
         </p>
-        <button class="cta" type="button" onclick="alert('Prototype: open hub action placeholder')">
-          Open the Hub
+        <button class="cta" type="button" onclick="scrollToSection('crisis')">
+          Open Crisis Mode
         </button>
       </div>
 
@@ -260,12 +269,13 @@
         <div class="card">
           <h3>Menu</h3>
           <p class="hint">
-            Sections will match the full milestone report. Right now, the key flows
-            are Issues + Sign up.
+            Prototype flows: Issues, Live Debate, Petitions, Community, and the
+            new Emergency Guidance layer.
           </p>
           <ul>
             <li><a href="#issues">Report an Issue</a></li>
-            <li><a href="#signup">Join the Community</a></li>
+            <li><a href="#petitions">Start a Petition</a></li>
+            <li><a href="#crisis">Emergency Guidance</a></li>
             <li>Safety &amp; Response</li>
             <li>Transit &amp; Infrastructure</li>
             <li>Housing &amp; Permits</li>
@@ -278,7 +288,8 @@
           <ul>
             <li>Real feeds (WebRTC / embed)</li>
             <li>API-driven ticker + moderation</li>
-            <li>Governance rules + participation model</li>
+            <li>Verified experts + trust tiers</li>
+            <li>Offline/local-network crisis caching</li>
           </ul>
         </div>
       </div>
@@ -286,12 +297,27 @@
 
     <section class="panel">
       <div class="video-card">
-        <h3>Feed B (browser stream)</h3>
+        <h3>Live Debate — Position B</h3>
         <video id="feedB" class="video" autoplay muted playsinline></video>
-        <p class="hint">Second slot for a partner feed / mirror / archived stream.</p>
+        <p class="hint">Second slot for partner feed/mirror/archived stream.</p>
       </div>
     </section>
   </main>
+
+  <section id="debate" class="wide-section">
+    <div class="card">
+      <h3>Live Debate structure</h3>
+      <p class="hint">
+        Two simultaneous feeds. Moderation + queue system. Citizens can submit
+        statements ahead of time, then post-show voting/petition actions.
+      </p>
+      <ul>
+        <li>Position A vs Position B</li>
+        <li>Queue + agenda + time-boxed responses</li>
+        <li>Archiving + accessibility (transcripts, summaries)</li>
+      </ul>
+    </div>
+  </section>
 
   <section id="issues" class="wide-section">
     <div class="card">
@@ -335,15 +361,41 @@
 
       <div class="actions" style="margin-top: 14px;">
         <button class="cta" type="button" onclick="alert('Prototype: issue submitted (local only).')">Post Issue</button>
-        <span class="subhint">Later: moderation, routing to departments, public + private visibility tiers.</span>
+        <span class="subhint">Later: moderation, routing, public/private visibility tiers.</span>
       </div>
+    </div>
+  </section>
+
+  <section id="petitions" class="wide-section">
+    <div class="card">
+      <h3>Petitions</h3>
+      <p class="hint">Prototype: petitions connect debate → action → measurable outcomes.</p>
+      <ul>
+        <li>Start a petition (prototype)</li>
+        <li>View active petitions</li>
+        <li>Support, share, and add context</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="community" class="wide-section">
+    <div class="card">
+      <h3>Community</h3>
+      <p class="hint">
+        Neighborhood hubs, groups, events, and verified resident roles.
+      </p>
+      <ul>
+        <li>Neighborhood feed</li>
+        <li>Events &amp; meetups</li>
+        <li>Volunteer coordination</li>
+      </ul>
     </div>
   </section>
 
   <section id="signup" class="wide-section">
     <div class="card">
       <h3>Join the community</h3>
-      <p class="hint">Prototype only: this is just the onboarding UI skeleton.</p>
+      <p class="hint">Prototype only: onboarding UI skeleton.</p>
 
       <div class="form-grid">
         <div class="field">
@@ -363,12 +415,70 @@
 
       <div class="actions" style="margin-top: 14px;">
         <button class="cta" type="button" onclick="alert('Prototype: join request (local only).')">Sign up</button>
-        <span class="subhint">Later: verification, trust levels, and civic participation record.</span>
+        <span class="subhint">Later: verification, trust levels, civic participation record.</span>
       </div>
     </div>
   </section>
 
+  <section id="crisis" class="wide-section">
+    <div class="card">
+      <h3>Emergency Guidance (Crisis Mode)</h3>
+      <p class="hint">
+        This isn’t dispatch. It’s the “what do I do right now?” layer—clear,
+        localized guidance built with emergency management expertise.
+      </p>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="scenarioSelect">Select a crisis scenario</label>
+          <select id="scenarioSelect">
+            <option value="">— choose one —</option>
+            <option value="earthquake">Earthquake</option>
+            <option value="wildfire">Wildfire</option>
+            <option value="pandemic">Pandemic</option>
+            <option value="unrest">Civil unrest / safety</option>
+            <option value="blackout">Power outage / comms down</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="nearestArea">Nearest neighborhood (optional)</label>
+          <input id="nearestArea" placeholder="Mission, Sunset, etc." />
+        </div>
+      </div>
+
+      <div id="scenarioOutput" class="card" style="margin-top: 12px;">
+        <h3>Guidance</h3>
+        <p class="hint">Pick a scenario to activate Crisis Mode.</p>
+      </div>
+
+      <p class="subhint" style="margin-top: 14px;">
+        Design goal: accessible guidance even when connectivity is limited via cached playbooks
+        + local network access (prototype placeholder).
+      </p>
+    </div>
+  </section>
+
+  <section id="about" class="wide-section">
+    <div class="card">
+      <h3>About</h3>
+      <p class="hint">
+        Civic Hub is a dual-purpose civic platform: everyday participation + critical infrastructure guidance.
+      </p>
+      <ul>
+        <li>Issues: report, route, and track</li>
+        <li>Live Debate: keep the community’s “town hall” alive</li>
+        <li>Petitions: convert discussion into outcomes</li>
+        <li>Emergency Guidance: Crisis Mode shifts UI priority during disasters</li>
+      </ul>
+    </div>
+  </section>
+
   <script>
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     function makeItem(text) {
       const li = document.createElement('li');
       li.textContent = text;
@@ -377,12 +487,12 @@
 
     function buildUpdates() {
       const updates = [
-        '🚨 Alert: Community meeting at 6PM — City Hall',
+        '🚨 Emergency Guidance (Crisis Mode) prototype is live.',
+        '🤝 Petition: Support Civic Hub pilot program',
         '🚌 Transit: Route 14 delay — track in app',
         '🏙️ Housing: Affordability hearing Friday',
         '🚀 Youth: STEM lab signups now open',
-        '🤝 Petition: Support civic hub pilot program',
-        '🌿 Climate: Tree planting event Sunday',
+        '🌿 Climate: Tree planting event Sunday'
       ];
       const ul = document.getElementById('updates');
       updates.forEach((t) => ul.appendChild(makeItem(t)));
@@ -402,10 +512,76 @@
       }
     }
 
+    const scenarios = {
+      earthquake: {
+        title: 'EARTHQUAKE',
+        now: ['Drop, Cover, Hold On', 'Stay away from windows & heavy items', 'If outside, move to open space'],
+        call: ['911 for life-threatening emergencies', 'Use radio/sms if calls fail', 'Avoid calling 911 for information only'],
+      },
+      wildfire: {
+        title: 'WILDFIRE',
+        now: ['Check air quality + close windows', 'Prepare go-bag + important items', 'Be ready to evacuate when notified'],
+        call: ['911 for life-threatening emergencies', 'Follow local evacuation notices', 'Report immediate hazards only'],
+      },
+      pandemic: {
+        title: 'PANDEMIC',
+        now: ['Follow local public health guidance', 'Mask where needed; keep distance', 'Avoid spreading misinformation'],
+        call: ['911 for life-threatening emergencies', 'Local health hotline or 311 for info', 'Use official sources for updates'],
+      },
+      unrest: {
+        title: 'CIVIL UNREST',
+        now: ['Avoid hot zones; shelter if needed', 'Do not approach law enforcement operations', 'Keep phone charged + backup power'],
+        call: ['911 for life-threatening emergencies', 'Call non-emergency lines when appropriate', 'Document safely; don’t incite'],
+      },
+      blackout: {
+        title: 'POWER OUTAGE / COMMS DOWN',
+        now: ['Use flashlights (not candles)', 'Unplug sensitive electronics', 'Check on neighbors safely'],
+        call: ['911 for life-threatening emergencies', 'Report outages via local utility channels', 'Use radio + local network fallback'],
+      },
+    };
+
+    function renderScenario(key) {
+      const out = document.getElementById('scenarioOutput');
+      const bar = document.getElementById('emergencyBar');
+      if (!key || !scenarios[key]) {
+        bar.classList.remove('active');
+        bar.textContent = '🚨 No active emergency. Pick a crisis scenario below to activate guidance.';
+        out.innerHTML = '<h3>Guidance</h3><p class="hint">Pick a scenario to activate Crisis Mode.</p>';
+        return;
+      }
+      const s = scenarios[key];
+      const nearest = (document.getElementById('nearestArea').value || '').trim();
+      bar.classList.add('active');
+      bar.textContent = `🚨 ${s.title} — follow guidance below`;
+      const nearestLine = nearest ? `<p class="hint">Nearest area: ${nearest}</p>` : '';
+      out.innerHTML = `
+        <h3>${s.title} — guidance</h3>
+        ${nearestLine}
+        <div class="form-grid">
+          <div class="field">
+            <label>Right now</label>
+            <ul>${s.now.map((x) => `<li>${x}</li>`).join('')}</ul>
+          </div>
+          <div class="field">
+            <label>Who to call / contact</label>
+            <ul>${s.call.map((x) => `<li>${x}</li>`).join('')}</ul>
+          </div>
+        </div>
+        <p class="subhint" style="margin-top: 12px;">Prototype only: no data is saved or sent yet. Later: verified expert updates + local-network fallback.</p>
+      `;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       buildUpdates();
       startVideo(document.getElementById('feedA'));
       startVideo(document.getElementById('feedB'));
+
+      const scenarioSelect = document.getElementById('scenarioSelect');
+      const nearestArea = document.getElementById('nearestArea');
+      scenarioSelect.addEventListener('change', (e) => renderScenario(e.target.value));
+      nearestArea.addEventListener('input', () => {
+        if (scenarioSelect.value) renderScenario(scenarioSelect.value);
+      });
     });
   </script>
 </body>
