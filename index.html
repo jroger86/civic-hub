@@ -25,6 +25,13 @@
         linear-gradient(180deg, #0a0f26, var(--bg));
     }
 
+    body.pulse {
+      background:
+        radial-gradient(1400px 1000px at 15% 0%, rgba(255, 86, 98, 0.20), transparent 60%),
+        radial-gradient(1200px 900px at 85% 0%, rgba(90, 221, 255, 0.14), transparent 65%),
+        linear-gradient(180deg, #0a0f26, var(--bg));
+    }
+
     a { color: var(--babyblue); }
 
     header.topbar {
@@ -74,6 +81,52 @@
       color: #060a18;
     }
     .cta.small { margin-top: 0; padding: 8px 12px; font-size: 13px; }
+
+    .badge {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.03);
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .floating {
+      position: fixed;
+      right: 16px;
+      bottom: 18px;
+      z-index: 1000;
+      display: inline-flex;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+    }
+
+    .floating button {
+      border: 0;
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-weight: 800;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(255, 86, 98, 0.90), rgba(90, 221, 255, 0.95));
+      color: #070d1f;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.30);
+    }
+
+    .floating button.pulse { animation: pulse 2s infinite; }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 18px 40px rgba(255, 86, 98, 0.20); }
+      50% { transform: scale(1.03); box-shadow: 0 18px 60px rgba(255, 86, 98, 0.35); }
+      100% { transform: scale(1); box-shadow: 0 18px 40px rgba(255, 86, 98, 0.20); }
+    }
 
     .shell {
       display: flex;
@@ -209,6 +262,14 @@
     .actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
     .subhint { color: var(--text2); font-size: 13px; }
 
+    .report-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .report {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 10px 12px;
+    }
+
     @media (max-width: 980px) {
       .shell { flex-direction: column; }
       .panel { flex-direction: column; }
@@ -216,6 +277,7 @@
       .sections { grid-template-columns: 1fr; }
       .video { height: 220px; }
       .form-grid { grid-template-columns: 1fr; }
+      .floating { left: 16px; right: 16px; justify-content: space-between; }
     }
   </style>
 </head>
@@ -230,6 +292,7 @@
       <a href="#community">Community</a>
       <a href="#petitions">Petitions</a>
       <a href="#crisis">Emergency Guidance</a>
+      <a href="#cin">CIN Model</a>
       <a href="#about">About</a>
     </nav>
     <button class="cta small" type="button" onclick="scrollToSection('issues')">Post Issue</button>
@@ -237,6 +300,11 @@
 
   <div id="emergencyBar" class="emergency-bar" role="alert">
     🚨 No active emergency. Pick a crisis scenario below to activate guidance.
+  </div>
+
+  <div class="floating" aria-label="Always-on crisis controls">
+    <span class="badge">Survival interface</span>
+    <button id="crisisFab" type="button" onclick="scrollToSection('crisis')">🚨 Emergency Guide</button>
   </div>
 
   <main id="hub" class="shell" aria-label="Civic Hub layout">
@@ -276,6 +344,7 @@
             <li><a href="#issues">Report an Issue</a></li>
             <li><a href="#petitions">Start a Petition</a></li>
             <li><a href="#crisis">Emergency Guidance</a></li>
+            <li><a href="#cin">CIN Model</a></li>
             <li>Safety &amp; Response</li>
             <li>Transit &amp; Infrastructure</li>
             <li>Housing &amp; Permits</li>
@@ -446,15 +515,81 @@
         </div>
       </div>
 
+      <div class="actions" style="margin-top: 12px;">
+        <button class="cta" type="button" onclick="cachePlaybooks()">Save offline playbook (prototype)</button>
+        <button class="cta" type="button" onclick="togglePulseMode()">Toggle City Pulse Mode</button>
+        <span class="subhint" id="pulseLabel">Pulse mode: off</span>
+      </div>
+
+      <div class="card" style="margin-top: 12px;">
+        <h3>Trust layers</h3>
+        <div class="actions">
+          <span class="badge">Trusted: official/verified guidance</span>
+          <span class="badge">Community: unverified ground-truth</span>
+        </div>
+        <p class="hint" style="margin-top: 8px;">
+          The goal is credibility under stress: less noise, more truth.
+        </p>
+      </div>
+
       <div id="scenarioOutput" class="card" style="margin-top: 12px;">
         <h3>Guidance</h3>
         <p class="hint">Pick a scenario to activate Crisis Mode.</p>
+      </div>
+
+      <div class="card" style="margin-top: 12px;">
+        <h3>Report situation (community layer)</h3>
+        <p class="hint">Prototype only: no reports are sent anywhere—this is UI scaffolding.</p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="reportType">Type</label>
+            <select id="reportType">
+              <option value="hazard">Hazard</option>
+              <option value="need">Need (medical, food, shelter)</option>
+              <option value="damage">Damage / outage</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="reportArea">Area</label>
+            <input id="reportArea" placeholder="Neighborhood / intersection" />
+          </div>
+        </div>
+
+        <div class="field" style="margin-top: 12px;">
+          <label for="reportText">What happened?</label>
+          <textarea id="reportText" placeholder="Short, factual description" aria-label="Report details"></textarea>
+        </div>
+
+        <div class="actions" style="margin-top: 12px;">
+          <button class="cta" type="button" onclick="addReport()">Add report</button>
+          <span class="subhint">Later: moderation + verified responders.</span>
+        </div>
+
+        <ul id="reports" class="report-list" aria-label="Recent community reports"></ul>
       </div>
 
       <p class="subhint" style="margin-top: 14px;">
         Design goal: accessible guidance even when connectivity is limited via cached playbooks
         + local network access (prototype placeholder).
       </p>
+    </div>
+  </section>
+
+  <section id="cin" class="wide-section">
+    <div class="card">
+      <h3>Crisis Intelligence Network (CIN)</h3>
+      <p class="hint">
+        A structured model for emergency guidance. Build with experienced responders, public health, and community organizers.
+      </p>
+      <ul>
+        <li>Playbooks: prebuilt scenarios</li>
+        <li>Expert layer: validated guidance</li>
+        <li>Real-time adaptation: local conditions change fast</li>
+        <li>Citizen input: ground truth + trust tiers</li>
+        <li>Action layer: 3–5 clear steps</li>
+      </ul>
     </div>
   </section>
 
@@ -488,10 +623,10 @@
     function buildUpdates() {
       const updates = [
         '🚨 Emergency Guidance (Crisis Mode) prototype is live.',
+        '⚡ Crisis Mode: survival interface (3 actions, not chaos).',
+        '📦 Offline playbook cache (prototype stub) ready.',
         '🤝 Petition: Support Civic Hub pilot program',
         '🚌 Transit: Route 14 delay — track in app',
-        '🏙️ Housing: Affordability hearing Friday',
-        '🚀 Youth: STEM lab signups now open',
         '🌿 Climate: Tree planting event Sunday'
       ];
       const ul = document.getElementById('updates');
@@ -517,42 +652,61 @@
         title: 'EARTHQUAKE',
         now: ['Drop, Cover, Hold On', 'Stay away from windows & heavy items', 'If outside, move to open space'],
         call: ['911 for life-threatening emergencies', 'Use radio/sms if calls fail', 'Avoid calling 911 for information only'],
+        trusted: 'Core guidance: protect head/neck; wait for shaking to stop; then move carefully.',
       },
       wildfire: {
         title: 'WILDFIRE',
         now: ['Check air quality + close windows', 'Prepare go-bag + important items', 'Be ready to evacuate when notified'],
         call: ['911 for life-threatening emergencies', 'Follow local evacuation notices', 'Report immediate hazards only'],
+        trusted: 'Core guidance: reduce smoke exposure; prepare to evacuate early; follow official notices.',
       },
       pandemic: {
         title: 'PANDEMIC',
         now: ['Follow local public health guidance', 'Mask where needed; keep distance', 'Avoid spreading misinformation'],
         call: ['911 for life-threatening emergencies', 'Local health hotline or 311 for info', 'Use official sources for updates'],
+        trusted: 'Core guidance: protect the vulnerable, reduce spread, rely on health authorities.',
       },
       unrest: {
         title: 'CIVIL UNREST',
         now: ['Avoid hot zones; shelter if needed', 'Do not approach law enforcement operations', 'Keep phone charged + backup power'],
         call: ['911 for life-threatening emergencies', 'Call non-emergency lines when appropriate', 'Document safely; don’t incite'],
+        trusted: 'Core guidance: prioritize safety; stay clear of active operations; preserve evidence responsibly.',
       },
       blackout: {
         title: 'POWER OUTAGE / COMMS DOWN',
         now: ['Use flashlights (not candles)', 'Unplug sensitive electronics', 'Check on neighbors safely'],
         call: ['911 for life-threatening emergencies', 'Report outages via local utility channels', 'Use radio + local network fallback'],
+        trusted: 'Core guidance: prevent fire hazards; conserve power; rely on radio/local networks.',
       },
     };
+
+    function updateFabPulse(on) {
+      const fab = document.getElementById('crisisFab');
+      if (!fab) return;
+      fab.classList.toggle('pulse', !!on);
+    }
 
     function renderScenario(key) {
       const out = document.getElementById('scenarioOutput');
       const bar = document.getElementById('emergencyBar');
+
       if (!key || !scenarios[key]) {
+        document.body.classList.remove('pulse');
+        updateFabPulse(false);
         bar.classList.remove('active');
         bar.textContent = '🚨 No active emergency. Pick a crisis scenario below to activate guidance.';
         out.innerHTML = '<h3>Guidance</h3><p class="hint">Pick a scenario to activate Crisis Mode.</p>';
         return;
       }
+
+      document.body.classList.add('pulse');
+      updateFabPulse(true);
+
       const s = scenarios[key];
       const nearest = (document.getElementById('nearestArea').value || '').trim();
       bar.classList.add('active');
       bar.textContent = `🚨 ${s.title} — follow guidance below`;
+
       const nearestLine = nearest ? `<p class="hint">Nearest area: ${nearest}</p>` : '';
       out.innerHTML = `
         <h3>${s.title} — guidance</h3>
@@ -566,9 +720,61 @@
             <label>Who to call / contact</label>
             <ul>${s.call.map((x) => `<li>${x}</li>`).join('')}</ul>
           </div>
+          <div class="field">
+            <label>Trusted source</label>
+            <p class="hint">${s.trusted}</p>
+          </div>
         </div>
         <p class="subhint" style="margin-top: 12px;">Prototype only: no data is saved or sent yet. Later: verified expert updates + local-network fallback.</p>
       `;
+    }
+
+    function cachePlaybooks() {
+      try {
+        localStorage.setItem('civic-hub.playbooks', JSON.stringify(scenarios));
+        alert('Playbooks cached (prototype stub).');
+      } catch (e) {
+        alert('Caching failed (prototype).');
+      }
+    }
+
+    function togglePulseMode() {
+      document.body.classList.toggle('pulse');
+      const isOn = document.body.classList.contains('pulse');
+      updateFabPulse(isOn);
+      const lbl = document.getElementById('pulseLabel');
+      if (lbl) lbl.textContent = `Pulse mode: ${isOn ? 'on' : 'off'}`;
+    }
+
+    const reports = [];
+
+    function addReport() {
+      const type = document.getElementById('reportType').value;
+      const area = (document.getElementById('reportArea').value || '').trim();
+      const text = (document.getElementById('reportText').value || '').trim();
+      if (!text) {
+        alert('Add a short report first.');
+        return;
+      }
+
+      reports.unshift({ type, area, text, trust: 'Community (unverified)', ts: new Date().toLocaleTimeString() });
+      if (reports.length > 5) reports.pop();
+
+      document.getElementById('reportText').value = '';
+      renderReports();
+    }
+
+    function renderReports() {
+      const ul = document.getElementById('reports');
+      if (!ul) return;
+      ul.innerHTML = '';
+      reports.forEach((r) => {
+        const li = document.createElement('li');
+        li.className = 'report';
+        const area = r.area ? ` — ${r.area}` : '';
+        li.innerHTML = `<div class="hint" style="margin-bottom: 6px;">${r.ts} • ${r.type}${area} • ${r.trust}</div><div>${r.text}</div>`;
+        ul.appendChild(li);
+      });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -582,6 +788,8 @@
       nearestArea.addEventListener('input', () => {
         if (scenarioSelect.value) renderScenario(scenarioSelect.value);
       });
+
+      renderReports();
     });
   </script>
 </body>
