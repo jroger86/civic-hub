@@ -9,11 +9,11 @@
       --bg: #070d1f;
       --panel: rgba(0, 0, 0, 0.30);
       --stroke: rgba(255, 255, 255, 0.14);
-      --text2: rgba(255, 255, 255, 0.65);
+      --text2: rgba(255, 255, 255, 0.70);
+      --babyblue: rgba(90, 221, 255, 0.92);
     }
-    html, body {
-      height: 100%;
-    }
+
+    html, body { height: 100%; }
     body {
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -22,23 +22,35 @@
         radial-gradient(1200px 800px at 10% 0%, rgba(90, 221, 255, 0.18), transparent 55%),
         radial-gradient(1200px 900px at 90% 20%, rgba(171, 120, 255, 0.18), transparent 60%),
         linear-gradient(180deg, #0a0f26, var(--bg));
-      overflow-x: hidden;
     }
 
-    .topbar {
+    a { color: var(--babyblue); }
+
+    header.topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
       padding: 14px 18px;
       border-bottom: 1px solid var(--stroke);
       background: rgba(0, 0, 0, 0.20);
       backdrop-filter: blur(10px);
+      flex-wrap: wrap;
     }
-    .topbar h1 {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: 0.6px;
+
+    .topbar h1 { margin: 0; font-size: 18px; letter-spacing: 0.6px; }
+
+    nav.primary { display: flex; gap: 12px; flex-wrap: wrap; }
+    nav.primary a {
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 13px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(90, 221, 255, 0.20);
+      background: rgba(255, 255, 255, 0.03);
     }
+
     .status {
       padding: 7px 10px;
       border-radius: 999px;
@@ -50,23 +62,15 @@
 
     .shell {
       display: flex;
-      height: calc(100vh - 60px);
+      height: auto;
+      min-height: calc(100vh - 64px);
       padding: 14px;
       gap: 12px;
       box-sizing: border-box;
     }
 
-    .panel {
-      flex: 1;
-      display: flex;
-      align-items: stretch;
-    }
-
-    .central {
-      flex: 1.6;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .panel { flex: 1; display: flex; align-items: stretch; }
+    .central { flex: 1.6; flex-direction: column; gap: 12px; }
 
     .video-card, .card {
       background: var(--panel);
@@ -77,12 +81,7 @@
       width: 100%;
     }
 
-    .video-card h3, .card h3 {
-      margin-top: 0;
-      font-size: 14px;
-      letter-spacing: 0.3px;
-      color: rgba(255, 255, 255, 0.9);
-    }
+    .video-card h3, .card h3 { margin-top: 0; font-size: 14px; letter-spacing: 0.3px; }
 
     .video {
       width: 100%;
@@ -93,11 +92,7 @@
       object-fit: cover;
     }
 
-    .hint {
-      margin: 8px 0 0 0;
-      font-size: 13px;
-      color: var(--text2);
-    }
+    .hint { margin: 8px 0 0 0; font-size: 13px; color: var(--text2); }
 
     .jumbotron {
       background: linear-gradient(135deg, rgba(90, 221, 255, 0.22), rgba(171, 120, 255, 0.18));
@@ -107,18 +102,8 @@
       box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
     }
 
-    .jumbotron h2 {
-      margin: 0 0 8px 0;
-      font-size: 20px;
-      letter-spacing: 0.4px;
-    }
-
-    .jumbotron p {
-      margin: 0;
-      color: rgba(255, 255, 255, 0.85);
-      line-height: 1.45;
-      font-size: 14px;
-    }
+    .jumbotron h2 { margin: 0 0 8px 0; font-size: 20px; letter-spacing: 0.4px; }
+    .jumbotron p { margin: 0; color: rgba(255, 255, 255, 0.85); line-height: 1.45; font-size: 14px; }
 
     .cta {
       margin-top: 12px;
@@ -130,10 +115,6 @@
       cursor: pointer;
       background: linear-gradient(135deg, #5addee, #ab78ff);
       color: #060a18;
-    }
-
-    .cta:active {
-      transform: translateY(1px);
     }
 
     .ticker {
@@ -197,27 +178,43 @@
       text-align: center;
     }
 
+    .wide-section {
+      padding: 0 14px 28px;
+    }
+
+    .wide-section .card { max-width: 980px; margin: 0 auto; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { color: var(--text2); font-size: 13px; }
+    .field input, .field select, .field textarea {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.03);
+      color: rgba(255, 255, 255, 0.92);
+      padding: 10px 12px;
+      font: inherit;
+      outline: none;
+      box-shadow: inset 0 0 0 1px transparent;
+    }
+
+    .field textarea { min-height: 120px; resize: vertical; }
+
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .subhint { color: var(--text2); font-size: 13px; }
+
     @media (max-width: 980px) {
-      .shell {
-        height: auto;
-        flex-direction: column;
-      }
-
-      .panel {
-        flex-direction: column;
-      }
-
-      .central {
-        flex-direction: column;
-      }
-
-      .sections {
-        grid-template-columns: 1fr;
-      }
-
-      .video {
-        height: 220px;
-      }
+      .shell { flex-direction: column; }
+      .panel { flex-direction: column; }
+      .central { flex-direction: column; }
+      .sections { grid-template-columns: 1fr; }
+      .video { height: 220px; }
+      .form-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -225,10 +222,16 @@
 <body>
   <header class="topbar">
     <h1>Civic Hub</h1>
+    <nav class="primary" aria-label="Primary navigation">
+      <a href="#hub">Hub</a>
+      <a href="#issues">Issues</a>
+      <a href="#signup">Sign up</a>
+      <a href="#sections">Sections</a>
+    </nav>
     <div class="status">Prototype</div>
   </header>
 
-  <main class="shell" aria-label="Civic Hub layout">
+  <main id="hub" class="shell" aria-label="Civic Hub layout">
     <section class="panel">
       <div class="video-card">
         <h3>Feed A (browser stream)</h3>
@@ -241,7 +244,8 @@
       <div class="jumbotron" role="region" aria-label="Jumbotron">
         <h2>Community Signal</h2>
         <p>
-          Jumbotron message: highlight an alert, petition, or call-to-action.
+          Highlight an alert, petition, or call-to-action. This is the “welcome
+          moment” for citizens.
         </p>
         <button class="cta" type="button" onclick="alert('Prototype: open hub action placeholder')">
           Open the Hub
@@ -252,24 +256,27 @@
         <ul id="updates"></ul>
       </div>
 
-      <div class="sections" aria-label="Topic lanes">
+      <div id="sections" class="sections" aria-label="Topic lanes">
         <div class="card">
-          <h3>Sections (from report)</h3>
+          <h3>Menu</h3>
           <p class="hint">
-            We’ll replace these with your full section list.
+            Sections will match the full milestone report. Right now, the key flows
+            are Issues + Sign up.
           </p>
           <ul>
-            <li>Safety & Response</li>
-            <li>Housing & Permits</li>
-            <li>Transit & Infrastructure</li>
-            <li>Education & Youth</li>
+            <li><a href="#issues">Report an Issue</a></li>
+            <li><a href="#signup">Join the Community</a></li>
+            <li>Safety &amp; Response</li>
+            <li>Transit &amp; Infrastructure</li>
+            <li>Housing &amp; Permits</li>
+            <li>Education &amp; Youth</li>
           </ul>
         </div>
 
         <div class="card">
           <h3>Next iteration</h3>
           <ul>
-            <li>Real feeds (WebRTC / RTMP embed)</li>
+            <li>Real feeds (WebRTC / embed)</li>
             <li>API-driven ticker + moderation</li>
             <li>Governance rules + participation model</li>
           </ul>
@@ -285,6 +292,81 @@
       </div>
     </section>
   </main>
+
+  <section id="issues" class="wide-section">
+    <div class="card">
+      <h3>Report an issue</h3>
+      <p class="hint">Prototype only: nothing is saved yet. This defines the UI flow.</p>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="issueCategory">Category</label>
+          <select id="issueCategory" aria-label="Issue category">
+            <option>Safety / Crime</option>
+            <option>Transit / Traffic</option>
+            <option>Housing / Permits</option>
+            <option>Environment</option>
+            <option>Public services</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="issueTitle">Title</label>
+          <input id="issueTitle" placeholder="Short headline" />
+        </div>
+      </div>
+
+      <div class="field" style="margin-top: 12px;">
+        <label for="issueDesc">Details</label>
+        <textarea id="issueDesc" placeholder="What happened, where, and what outcome you want" aria-label="Issue details"></textarea>
+      </div>
+
+      <div class="form-grid" style="margin-top: 12px;">
+        <div class="field">
+          <label for="issueLocation">Location (optional)</label>
+          <input id="issueLocation" placeholder="Address / intersection" />
+        </div>
+        <div class="field">
+          <label for="issueEmail">Contact (optional)</label>
+          <input id="issueEmail" placeholder="Email" type="email" />
+        </div>
+      </div>
+
+      <div class="actions" style="margin-top: 14px;">
+        <button class="cta" type="button" onclick="alert('Prototype: issue submitted (local only).')">Post Issue</button>
+        <span class="subhint">Later: moderation, routing to departments, public + private visibility tiers.</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="signup" class="wide-section">
+    <div class="card">
+      <h3>Join the community</h3>
+      <p class="hint">Prototype only: this is just the onboarding UI skeleton.</p>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="signupName">Name</label>
+          <input id="signupName" placeholder="Your name" />
+        </div>
+        <div class="field">
+          <label for="signupEmail">Email</label>
+          <input id="signupEmail" placeholder="you@example.com" type="email" />
+        </div>
+      </div>
+
+      <div class="field" style="margin-top: 12px;">
+        <label for="signupInterest">Why are you joining?</label>
+        <textarea id="signupInterest" placeholder="Issues you care about, skills, neighborhood" aria-label="Signup interest"></textarea>
+      </div>
+
+      <div class="actions" style="margin-top: 14px;">
+        <button class="cta" type="button" onclick="alert('Prototype: join request (local only).')">Sign up</button>
+        <span class="subhint">Later: verification, trust levels, and civic participation record.</span>
+      </div>
+    </div>
+  </section>
 
   <script>
     function makeItem(text) {
