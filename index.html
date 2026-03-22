@@ -8,10 +8,12 @@
     :root {
       --bg: #070d1f;
       --panel: rgba(0, 0, 0, 0.30);
+      --overlay: rgba(0, 0, 0, 0.65);
       --stroke: rgba(255, 255, 255, 0.14);
       --text2: rgba(255, 255, 255, 0.70);
       --babyblue: rgba(90, 221, 255, 0.92);
       --alert: rgba(255, 86, 98, 0.92);
+      --ok: rgba(90, 255, 151, 0.92);
     }
 
     html, body { height: 100%; }
@@ -27,7 +29,7 @@
 
     body.pulse {
       background:
-        radial-gradient(1400px 1000px at 15% 0%, rgba(255, 86, 98, 0.20), transparent 60%),
+        radial-gradient(1400px 1000px at 15% 0%, rgba(255, 86, 98, 0.18), transparent 60%),
         radial-gradient(1200px 900px at 85% 0%, rgba(90, 221, 255, 0.14), transparent 65%),
         linear-gradient(180deg, #0a0f26, var(--bg));
     }
@@ -64,7 +66,7 @@
       padding: 10px 18px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.25);
       background: linear-gradient(135deg, rgba(255, 86, 98, 0.15), rgba(255, 86, 98, 0.05));
-      color: rgba(255, 255, 255, 0.90);
+      color: rgba(255, 255, 255, 0.92);
       font-weight: 750;
     }
     .emergency-bar.active { display: block; }
@@ -130,7 +132,6 @@
 
     .shell {
       display: flex;
-      height: auto;
       min-height: calc(100vh - 64px);
       padding: 14px;
       gap: 12px;
@@ -213,7 +214,7 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       padding: 2px;
-      box-sizing: border-box;
+      box-sizing: box-sizing;
     }
 
     .sections ul {
@@ -222,16 +223,6 @@
       color: rgba(255, 255, 255, 0.80);
       font-size: 14px;
       line-height: 1.4;
-    }
-
-    .no-camera {
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px dashed rgba(255, 255, 255, 0.25);
-      background: rgba(255, 255, 255, 0.03);
-      color: rgba(255, 255, 255, 0.75);
-      font-size: 14px;
-      text-align: center;
     }
 
     .wide-section { padding: 0 14px 28px; }
@@ -270,6 +261,88 @@
       padding: 10px 12px;
     }
 
+    .crisis-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.75)),
+        radial-gradient(900px 500px at 15% 15%, rgba(255, 86, 98, 0.22), transparent 62%),
+        radial-gradient(900px 600px at 85% 25%, rgba(90, 221, 255, 0.18), transparent 60%);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    body.crisis-open .crisis-overlay { display: flex; }
+
+    .crisis-panel {
+      max-width: 980px;
+      width: min(980px, 96vw);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(0, 0, 0, 0.40);
+      box-shadow: 0 40px 110px rgba(0, 0, 0, 0.45);
+      padding: 18px;
+    }
+
+    .crisis-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .crisis-heading h2 { margin: 0; font-size: 22px; letter-spacing: 0.6px; }
+
+    .crisis-tiles {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .tile {
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px;
+      min-height: 112px;
+    }
+
+    .tile h4 { margin: 0 0 6px 0; font-size: 13px; letter-spacing: 0.2px; color: rgba(255,255,255,0.88); }
+
+    .close-overlay {
+      border: 0;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.10);
+      color: rgba(255,255,255,0.92);
+    }
+
+    .close-overlay:hover { background: rgba(255, 255, 255, 0.16); }
+
+    .modes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .mode-card {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px;
+    }
+
+    .mode-card h4 { margin: 0 0 6px 0; font-size: 13px; letter-spacing: 0.2px; }
+
     @media (max-width: 980px) {
       .shell { flex-direction: column; }
       .panel { flex-direction: column; }
@@ -278,6 +351,8 @@
       .video { height: 220px; }
       .form-grid { grid-template-columns: 1fr; }
       .floating { left: 16px; right: 16px; justify-content: space-between; }
+      .crisis-tiles { grid-template-columns: 1fr; }
+      .modes-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -302,9 +377,62 @@
     🚨 No active emergency. Pick a crisis scenario below to activate guidance.
   </div>
 
+  <div id="crisisOverlay" class="crisis-overlay" aria-label="Crisis Mode overlay">
+    <div class="crisis-panel">
+      <div class="crisis-heading">
+        <div>
+          <h2 id="overlayTitle">Crisis Mode</h2>
+          <p class="hint" id="overlayHint">Pick a scenario and hit “View Guidance”.
+            This is the survival interface: 3 clear sections, minimal noise.
+          </p>
+        </div>
+        <button class="close-overlay" type="button" onclick="closeCrisisOverlay()" aria-label="Exit crisis mode">Exit (Esc)</button>
+      </div>
+
+      <div class="actions" style="margin-top: 0;">
+        <span class="badge" id="overlayTrust">Trusted: base playbook</span>
+        <span class="badge">Speed > perfection</span>
+        <span class="badge">Clarity > completeness</span>
+      </div>
+
+      <div class="crisis-tiles" aria-label="Crisis actions">
+        <div class="tile">
+          <h4>Right now</h4>
+          <ul id="overlayNow" style="margin:0; padding-left: 18px;">
+            <li>—</li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h4>Where to go / do</h4>
+          <ul id="overlayWhere" style="margin:0; padding-left: 18px;">
+            <li>—</li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h4>Who to call / contact</h4>
+          <ul id="overlayCall" style="margin:0; padding-left: 18px;">
+            <li>911 for immediate life-threatening emergencies</li>
+            <li>311 or local info lines for non-urgent info</li>
+            <li>Radio/SMS when networks are unreliable</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="actions" style="margin-top: 12px;">
+        <button class="cta" type="button" onclick="closeCrisisOverlay(); scrollToSection('crisis')">View / change playbook</button>
+        <span class="subhint" id="cacheStatus">Offline cache: not saved</span>
+      </div>
+
+      <p class="subhint" style="margin-top: 12px;">
+        Prototype only — nothing is sent or stored. Next iterations:
+        verified experts, trust tiers, moderation, local-network fallback.
+      </p>
+    </div>
+  </div>
+
   <div class="floating" aria-label="Always-on crisis controls">
     <span class="badge">Survival interface</span>
-    <button id="crisisFab" type="button" onclick="scrollToSection('crisis')">🚨 Emergency Guide</button>
+    <button id="crisisFab" type="button" onclick="openCrisisOverlay()">🚨 Emergency Guide</button>
   </div>
 
   <main id="hub" class="shell" aria-label="Civic Hub layout">
@@ -321,10 +449,9 @@
         <h2>Community Signal</h2>
         <p>
           Civic Hub is the citizen-facing layer: actions first, voice next.
-          When Crisis Mode activates, guidance takes over—clear, local, and
-          usable.
+          When Crisis Mode activates, guidance takes over—clear, local, and usable.
         </p>
-        <button class="cta" type="button" onclick="scrollToSection('crisis')">
+        <button class="cta" type="button" onclick="openCrisisOverlay()">
           Open Crisis Mode
         </button>
       </div>
@@ -337,8 +464,7 @@
         <div class="card">
           <h3>Menu</h3>
           <p class="hint">
-            Prototype flows: Issues, Live Debate, Petitions, Community, and the
-            new Emergency Guidance layer.
+            Prototype flows: Issues, Live Debate, Petitions, Community, and the new Emergency Guidance layer.
           </p>
           <ul>
             <li><a href="#issues">Report an Issue</a></li>
@@ -377,8 +503,7 @@
     <div class="card">
       <h3>Live Debate structure</h3>
       <p class="hint">
-        Two simultaneous feeds. Moderation + queue system. Citizens can submit
-        statements ahead of time, then post-show voting/petition actions.
+        Two simultaneous feeds. Moderation + queue system. Citizens can submit statements ahead of time, then post-show voting/petition actions.
       </p>
       <ul>
         <li>Position A vs Position B</li>
@@ -518,7 +643,23 @@
       <div class="actions" style="margin-top: 12px;">
         <button class="cta" type="button" onclick="cachePlaybooks()">Save offline playbook (prototype)</button>
         <button class="cta" type="button" onclick="togglePulseMode()">Toggle City Pulse Mode</button>
+        <button class="cta" type="button" onclick="simulateDetection()">Simulate detection → open overlay</button>
         <span class="subhint" id="pulseLabel">Pulse mode: off</span>
+      </div>
+
+      <div class="modes-grid" aria-label="Resilience modes">
+        <div class="mode-card">
+          <h4>Tier 1: Internet</h4>
+          <p class="hint">Normal operations: cloud-hosted updates, full map, official feed.</p>
+        </div>
+        <div class="mode-card">
+          <h4>Tier 2: Local network (offline)</h4>
+          <p class="hint">Fallback: cached playbooks + local access point (prototype placeholder).</p>
+        </div>
+        <div class="mode-card">
+          <h4>Tier 3: Peer-to-peer</h4>
+          <p class="hint">Future: device-to-device sharing for updates when the network is down.</p>
+        </div>
       </div>
 
       <div class="card" style="margin-top: 12px;">
@@ -571,8 +712,7 @@
       </div>
 
       <p class="subhint" style="margin-top: 14px;">
-        Design goal: accessible guidance even when connectivity is limited via cached playbooks
-        + local network access (prototype placeholder).
+        Design goal: accessible guidance even when connectivity is limited via cached playbooks + local network access (prototype placeholder).
       </p>
     </div>
   </section>
@@ -623,8 +763,8 @@
     function buildUpdates() {
       const updates = [
         '🚨 Emergency Guidance (Crisis Mode) prototype is live.',
-        '⚡ Crisis Mode: survival interface (3 actions, not chaos).',
-        '📦 Offline playbook cache (prototype stub) ready.',
+        '⚡ Survival interface: 3 sections, no chaos.',
+        '📦 Offline playbook cache (prototype stub).',
         '🤝 Petition: Support Civic Hub pilot program',
         '🚌 Transit: Route 14 delay — track in app',
         '🌿 Climate: Tree planting event Sunday'
@@ -643,7 +783,7 @@
         videoEl.srcObject = stream;
       } catch (err) {
         videoEl.outerHTML =
-          "<div class='no-camera'>Camera access blocked or unavailable.\n\nOn mobile, use HTTPS and grant permission.</div>";
+          "<div class='card'>Camera access blocked or unavailable.<br /><br />On mobile, use HTTPS and grant permission.</div>";
       }
     }
 
@@ -652,30 +792,35 @@
         title: 'EARTHQUAKE',
         now: ['Drop, Cover, Hold On', 'Stay away from windows & heavy items', 'If outside, move to open space'],
         call: ['911 for life-threatening emergencies', 'Use radio/sms if calls fail', 'Avoid calling 911 for information only'],
+        where: ['After shaking: check gas leaks', 'Avoid elevators; use stairs', 'Expect aftershocks — move carefully'],
         trusted: 'Core guidance: protect head/neck; wait for shaking to stop; then move carefully.',
       },
       wildfire: {
         title: 'WILDFIRE',
         now: ['Check air quality + close windows', 'Prepare go-bag + important items', 'Be ready to evacuate when notified'],
         call: ['911 for life-threatening emergencies', 'Follow local evacuation notices', 'Report immediate hazards only'],
+        where: ['If you can: map two exits', 'Keep car fueled; mask if needed', 'Leave early if you feel unsafe'],
         trusted: 'Core guidance: reduce smoke exposure; prepare to evacuate early; follow official notices.',
       },
       pandemic: {
         title: 'PANDEMIC',
         now: ['Follow local public health guidance', 'Mask where needed; keep distance', 'Avoid spreading misinformation'],
         call: ['911 for life-threatening emergencies', 'Local health hotline or 311 for info', 'Use official sources for updates'],
+        where: ['Monitor symptoms', 'Protect high-risk family', 'Limit exposure; stay home if sick'],
         trusted: 'Core guidance: protect the vulnerable, reduce spread, rely on health authorities.',
       },
       unrest: {
         title: 'CIVIL UNREST',
         now: ['Avoid hot zones; shelter if needed', 'Do not approach law enforcement operations', 'Keep phone charged + backup power'],
         call: ['911 for life-threatening emergencies', 'Call non-emergency lines when appropriate', 'Document safely; don’t incite'],
+        where: ['If outside, move to a safe distance', 'Stay in well-lit areas', 'Avoid conflict; prioritize safety'],
         trusted: 'Core guidance: prioritize safety; stay clear of active operations; preserve evidence responsibly.',
       },
       blackout: {
         title: 'POWER OUTAGE / COMMS DOWN',
         now: ['Use flashlights (not candles)', 'Unplug sensitive electronics', 'Check on neighbors safely'],
         call: ['911 for life-threatening emergencies', 'Report outages via local utility channels', 'Use radio + local network fallback'],
+        where: ['Keep fridge closed', 'Conserve battery power', 'Use local radio for updates'],
         trusted: 'Core guidance: prevent fire hazards; conserve power; rely on radio/local networks.',
       },
     };
@@ -686,27 +831,34 @@
       fab.classList.toggle('pulse', !!on);
     }
 
+    function updateEmergencyBar(key) {
+      const bar = document.getElementById('emergencyBar');
+      if (!key || !scenarios[key]) {
+        bar.classList.remove('active');
+        bar.textContent = '🚨 No active emergency. Pick a crisis scenario below to activate guidance.';
+        return;
+      }
+      const s = scenarios[key];
+      bar.classList.add('active');
+      bar.textContent = `🚨 ${s.title} — follow guidance below`;
+    }
+
     function renderScenario(key) {
       const out = document.getElementById('scenarioOutput');
-      const bar = document.getElementById('emergencyBar');
-
       if (!key || !scenarios[key]) {
         document.body.classList.remove('pulse');
         updateFabPulse(false);
-        bar.classList.remove('active');
-        bar.textContent = '🚨 No active emergency. Pick a crisis scenario below to activate guidance.';
+        updateEmergencyBar('');
         out.innerHTML = '<h3>Guidance</h3><p class="hint">Pick a scenario to activate Crisis Mode.</p>';
         return;
       }
 
       document.body.classList.add('pulse');
       updateFabPulse(true);
+      updateEmergencyBar(key);
 
       const s = scenarios[key];
       const nearest = (document.getElementById('nearestArea').value || '').trim();
-      bar.classList.add('active');
-      bar.textContent = `🚨 ${s.title} — follow guidance below`;
-
       const nearestLine = nearest ? `<p class="hint">Nearest area: ${nearest}</p>` : '';
       out.innerHTML = `
         <h3>${s.title} — guidance</h3>
@@ -715,6 +867,10 @@
           <div class="field">
             <label>Right now</label>
             <ul>${s.now.map((x) => `<li>${x}</li>`).join('')}</ul>
+          </div>
+          <div class="field">
+            <label>Where to go / do</label>
+            <ul>${s.where.map((x) => `<li>${x}</li>`).join('')}</ul>
           </div>
           <div class="field">
             <label>Who to call / contact</label>
@@ -727,15 +883,63 @@
         </div>
         <p class="subhint" style="margin-top: 12px;">Prototype only: no data is saved or sent yet. Later: verified expert updates + local-network fallback.</p>
       `;
+
+      renderOverlayContent(key);
+    }
+
+    function renderOverlayContent(key) {
+      const titleEl = document.getElementById('overlayTitle');
+      const hintEl = document.getElementById('overlayHint');
+      const nowEl = document.getElementById('overlayNow');
+      const whereEl = document.getElementById('overlayWhere');
+      const callEl = document.getElementById('overlayCall');
+
+      if (!key || !scenarios[key]) {
+        titleEl.textContent = 'Crisis Mode';
+        hintEl.textContent = 'Pick a scenario below and reopen. This screen is designed for “oh no” moments: simple, fast, trustworthy.';
+        nowEl.innerHTML = '<li>—</li>';
+        whereEl.innerHTML = '<li>—</li>';
+        callEl.innerHTML = '<li>911 for immediate life-threatening emergencies</li><li>311 or local info lines for non-urgent info</li><li>Radio/SMS when networks are unreliable</li>';
+        return;
+      }
+
+      const s = scenarios[key];
+      const nearest = (document.getElementById('nearestArea').value || '').trim();
+
+      titleEl.textContent = `${s.title} guidance`;
+      hintEl.textContent = nearest ? `Nearest area: ${nearest}.` : 'If you’re unsure, prioritize safety first.';
+      nowEl.innerHTML = s.now.map((x) => `<li>${x}</li>`).join('');
+      whereEl.innerHTML = s.where.map((x) => `<li>${x}</li>`).join('');
+      callEl.innerHTML = s.call.map((x) => `<li>${x}</li>`).join('');
+    }
+
+    function openCrisisOverlay() {
+      const scenarioSelect = document.getElementById('scenarioSelect');
+      document.body.classList.add('crisis-open');
+      renderOverlayContent(scenarioSelect.value);
+      document.addEventListener('keydown', escListener);
+    }
+
+    function closeCrisisOverlay() {
+      document.body.classList.remove('crisis-open');
+      document.removeEventListener('keydown', escListener);
+    }
+
+    function escListener(e) {
+      if (e.key === 'Escape') closeCrisisOverlay();
     }
 
     function cachePlaybooks() {
+      let ok = false;
       try {
         localStorage.setItem('civic-hub.playbooks', JSON.stringify(scenarios));
+        ok = true;
         alert('Playbooks cached (prototype stub).');
       } catch (e) {
         alert('Caching failed (prototype).');
       }
+      const cacheStatus = document.getElementById('cacheStatus');
+      if (cacheStatus) cacheStatus.textContent = `Offline cache: ${ok ? 'saved' : 'not saved'}`;
     }
 
     function togglePulseMode() {
@@ -744,6 +948,14 @@
       updateFabPulse(isOn);
       const lbl = document.getElementById('pulseLabel');
       if (lbl) lbl.textContent = `Pulse mode: ${isOn ? 'on' : 'off'}`;
+    }
+
+    function simulateDetection() {
+      // Prototype: fake “event detected” by selecting a scenario and opening overlay.
+      const scenarioSelect = document.getElementById('scenarioSelect');
+      if (!scenarioSelect.value) scenarioSelect.value = 'earthquake';
+      renderScenario(scenarioSelect.value);
+      openCrisisOverlay();
     }
 
     const reports = [];
@@ -790,6 +1002,7 @@
       });
 
       renderReports();
+      renderOverlayContent('');
     });
   </script>
 </body>
