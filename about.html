@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Civic Hub · About</title>
+<style>
+:root{--ink:#eaf6ff; --muted: rgba(234,246,255,.78); --accent:#5addee; --line: rgba(234,246,255,.16);}
+body{margin:0;background:linear-gradient(180deg,#050814,#070d1f); color: var(--ink); font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(7,13,31,.72);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.row{display:flex;align-items:center;gap:16px;padding:10px 18px;}
+.brand{font-weight:900;letter-spacing:.6px;}
+nav{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+nav a{color: var(--muted); text-decoration:none; padding:8px 10px; border-radius:999px;}
+nav a:hover{background: rgba(90,221,255,.14); color: var(--ink);}
+.cta{margin-left:auto; padding:9px 12px; border-radius:12px; border:1px solid rgba(90,221,255,.3); background: rgba(90,221,255,.10); color: var(--accent); text-decoration:none;}
+main{max-width:960px;margin:0 auto;padding:24px 18px 80px;}
+.card{border:1px solid var(--line); border-radius:18px; padding:18px;background: rgba(255,255,255,.02);}
+.muted{color: var(--muted);}
+section + section{margin-top:14px;}
+select{color: var(--ink);}
+select option{color:#070d1f;background:#fff;}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="row">
+  <div class="brand">Civic Hub</div>
+  <nav aria-label="Primary">
+   <a href="index.html">Home</a>
+   <a href="issues.html">Issues</a>
+   <a href="live-debate.html">Live Debate</a>
+   <a href="community.html">Community</a>
+   <a href="petitions.html">Petitions</a>
+   <a href="emergency-guidance.html">Emergency Guidance</a>
+   <a href="cin-model.html">CIN Model</a>
+   <a href="about.html">About</a>
+  </nav>
+  <a class="cta" href="issues.html">Post issue</a>
+ </div>
+</header>
+<main>
+ <section class="card">
+  <h1>About Civic Hub</h1>
+  <p class="muted">Civic Hub is a prototype “community signal + action” platform built to keep residents informed and activated—from everyday community updates to crisis guidance.</p>
+ </section>
+ <section class="card">
+  <h2>Roadmap</h2>
+  <ul class="muted">
+    <li>Persistent signup + authentication (real accounts)</li>
+    <li>Issue triage with transparent prioritization</li>
+    <li>Petition validation + signature verification</li>
+    <li>Accessibility pass (keyboard-first nav, ARIA, high contrast)</li>
+  </ul>
+ </section>
+ <section class="card">
+  <h2>Credits</h2>
+  <p class="muted">Built fast, designed for residents, and meant to evolve with your community.</p>
+ </section>
+</main>
+</body>
+</html>
