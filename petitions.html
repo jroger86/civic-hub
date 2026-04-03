@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Civic Hub - Petitions</title>
+  <style>
+    :root{
+      --bg:#070d1f;
+      --ink:#eaf6ff;
+      --muted:rgba(234,246,255,.72);
+      --line:rgba(234,246,255,.14);
+      --accent:#5addee;
+    }
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(1200px 800px at 20% 20%,rgba(90,221,255,.14),transparent 55%),linear-gradient(180deg,#050814,#070d1f);color:var(--ink);min-height:100vh;}
+    .topbar{position:sticky;top:0;z-index:10;background:rgba(7,13,31,.70);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+    .topbar .row{display:flex;align-items:center;gap:16px;padding:10px 18px;}
+    .brand{font-weight:800;letter-spacing:.6px;}
+    nav{display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:999px;transition:background .2s,color .2s;}
+    nav a:hover{background:rgba(90,221,255,.14);color:var(--ink);}    
+    .cta{margin-left:auto;padding:9px 12px;border-radius:12px;border:1px solid rgba(90,221,255,.3);background:rgba(90,221,255,.10);color:var(--accent);cursor:pointer;}
+    .cta:hover{background:rgba(90,221,255,.18);}    
+    main{max-width:980px;margin:0 auto;padding:22px 18px 80px;}
+    h1,h2{margin:0 0 12px;}
+    p{margin:0 0 16px;color:var(--muted);}
+    .card{border:1px solid var(--line);border-radius:18px;padding:18px;background:rgba(255,255,255,.02);box-shadow:0 24px 80px rgba(0,0,0,.25);}    
+    .grid{display:grid;grid-template-columns:1fr;gap:14px;}
+    @media (min-width:820px){
+      .grid{grid-template-columns:1fr 1fr;}
+    }
+    form{display:grid;gap:12px;}
+    input,textarea,select{padding:10px 10px;border-radius:12px;border:1px solid rgba(234,246,255,.16);background:rgba(255,255,255,.03);color:var(--ink);}    
+    textarea{min-height:120px;resize:vertical;}
+    select{color:var(--ink);} /* ensure readable */
+    select option{color:#070d1f;background:#fff;}
+    .footerNote{margin-top:18px;color:var(--muted);font-size:13px;}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="row">
+      <div class="brand">Civic Hub</div>
+      <nav aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="issues.html">Issues</a>
+        <a href="live-debate.html">Live Debate</a>
+        <a href="community.html">Community</a>
+        <a href="petitions.html">Petitions</a>
+        <a href="emergency-guidance.html">Emergency Guidance</a>
+        <a href="cin-model.html">CIN Model</a>
+        <a href="about.html">About</a>
+      </nav>
+      <a class="cta" href="issues.html">Post issue</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h1>Petitions</h1>
+      <p>Turn community consensus into clear, trackable action items. Petitions are lightweight and public: they help citizens signal priorities without requiring a full “campaign” team.</p>
+    </section>
+
+    <section class="grid" style="margin-top:14px;">
+      <article class="card">
+        <h2>Start a petition</h2>
+        <form onsubmit="alert('Prototype: Petition created (local only).');this.reset();return false;">
+          <input type="text" name="title" placeholder="Petition title" required />
+          <textarea name="summary" placeholder="Short summary" required></textarea>
+          <input type="text" name="location" placeholder="City / district" />
+          <button type="submit" class="cta">Create</button>
+        </form>
+        <div class="footerNote">You can build validation + signatures storage later (backend / database). This is a prototype surface.</div>
+      </article>
+
+      <article class="card">
+        <h2>Signature feed (sample)</h2>
+        <p>Once live, this section shows the “who + why” of support (with lightweight privacy controls) so residents can see real support trends.</p>
+        <ul style="margin:10px 0 0 18px;color:var(--muted);">
+          <li>Sara M — “Fix the traffic light timing at Main &amp; 5th.”</li>
+          <li>Miles L — “Add shaded bus shelters.”</li>
+          <li>Jo A — “Open data for city services response times.”</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
