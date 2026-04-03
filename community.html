@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Civic Hub – Community</title>
+  <style>
+    :root{--bg:#050a15;--panel:rgba(255,255,255,.03);--accent:#5addee;--text:rgba(255,255,255,.88);--muted:rgba(255,255,255,.70);}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:System, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif}
+    a{color:var(--accent);text-decoration:none}
+    .top{position:sticky;top:0;background:rgba(5,10,21,.9);backdrop-filter:blur(8px);z-index:5;border-bottom:1px solid rgba(90,221,238,.25);}
+    .top-inner{max-width:1200px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:18px}
+    .brand a{font-weight:900;letter-spacing:.02em;color:var(--accent)}
+    .nav{display:flex;flex-wrap:wrap;gap:14px;flex:1}
+    .nav a{color:var(--muted);font-weight:650}
+    .nav a:hover,.nav a[aria-current="page"]{color:var(--accent)}
+    .post{padding:8px 12px;border-radius:999px;background:var(--accent);color:#050a15;font-weight:900}
+    .shell{max-width:1200px;margin:0 auto;padding:24px 20px}
+    .hero h1{margin:0;font-size:34px;line-height:1.1}
+    .hero p{margin:8px 0 0 0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:16px}
+    .card{border:1px solid rgba(90,221,238,.15);background:var(--panel);border-radius:16px;padding:16px}
+    .card h3{margin:0 0 10px 0;color:var(--accent)}
+    .card p{margin:0;color:var(--muted)}
+    .form{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+    input,textarea{border-radius:12px;border:1px solid rgba(90,221,238,.18);background:rgba(255,255,255,.03);padding:10px;color:var(--text)}
+    textarea{min-height:90px}
+    button{border:none;border-radius:999px;padding:10px 16px;background:var(--accent);color:#050a15;font-weight:900;cursor:pointer}
+    button:hover{opacity:.92}
+    .foot{padding:30px 20px;color:rgba(255,255,255,.55);text-align:center}
+    select option{color:#070d1f;background:#fff}
+  </style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand"><a href="index.html">Civic Hub</a></div>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="issues.html">Issues</a>
+      <a href="live-debate.html">Live Debate</a>
+      <a href="community.html" aria-current="page">Community</a>
+      <a href="petitions.html">Petitions</a>
+      <a href="emergency-guidance.html">Emergency Guidance</a>
+      <a href="cin-model.html">CIN Model</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a class="post" href="issues.html">Post Issue</a>
+  </div>
+</header>
+<main class="shell">
+  <section class="hero">
+    <h1>Community Hub</h1>
+    <p>A shared space for local resources, events, and coordination—built to keep people in sync.</p>
+  </section>
+
+  <section class="grid" aria-label="Community sections">
+    <div class="card">
+      <h3>Resources</h3>
+      <p>Food, shelter, clinics, funding, legal aid—categorized and easy to scan.</p>
+    </div>
+    <div class="card">
+      <h3>Events</h3>
+      <p>Town halls, cleanup days, youth programs, mentorship meetups.</p>
+    </div>
+    <div class="card">
+      <h3>Mutual Aid</h3>
+      <p>Needs and offers—people can post what they have and what they need.</p>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:16px;">
+    <h3>Add a community resource</h3>
+    <p style="margin:0 0 10px 0;color:var(--muted);">Demo-only: this doesn’t submit anywhere yet (keeps things safe while we prototype).</p>
+    <div class="form">
+      <input placeholder="Resource name" />
+      <input placeholder="Contact / URL" />
+      <textarea placeholder="Brief description" ></textarea>
+      <button type="button" onclick="alert('Prototype: resource added (local only).')">Add to community list</button>
+    </div>
+  </section>
+</main>
+<footer class="foot">Civic Hub prototype — everyday &amp; crisis.</footer>
+</body>
+</html>
