@@ -2,28 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Civic Hub — Issues</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Civic Hub — Issues (with Profiles)</title>
   <style>
-    body{margin:0;font-family:system-ui;background:#050815;color:rgba(255,255,255,.92)}
-    a{color:#5addee;text-decoration:none}
-    header{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px;border-bottom:1px solid rgba(90,221,255,.25)}
-    nav{display:flex;gap:8px;flex-wrap:wrap}
-    nav a{padding:8px 10px;border:1px solid rgba(255,255,255,.10);border-radius:999px;color:rgba(255,255,255,.68)}
-    nav a:hover{border-color:#5addee;color:#5addee}
-    .wrap{max-width:1100px;margin:0 auto;padding:14px}
-    .card{border:1px solid rgba(90,221,255,.25);background:rgba(255,255,255,.04);border-radius:16px;padding:14px;margin-top:12px}
-    input,textarea,select{width:100%;margin-top:10px;border-radius:12px;padding:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03);color:rgba(255,255,255,.92)}
-    textarea{min-height:90px}
-    button{margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(90,221,255,.10);color:#5addee;cursor:pointer}
-    .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.2);font-size:12px;color:rgba(255,255,255,.68)}
-    .hr{height:1px;background:rgba(255,255,255,.1);margin:12px 0}
+    :root {
+      --bg:#050a15;
+      --panel:rgba(255,255,255,.03);
+      --panel2:rgba(255,255,255,.05);
+      --accent:#5addee;
+      --text:rgba(255,255,255,.88);
+      --muted:rgba(255,255,255,.70);
+      --warn:#ffcc66;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); }
+    a { color:var(--accent); text-decoration:none; }
+
+    header { position:sticky; top:0; z-index:6; backdrop-filter:blur(10px); background:rgba(5,10,21,.92); border-bottom:1px solid rgba(90,221,238,.25); }
+    .top { max-width:1100px; margin:0 auto; padding:12px 16px; display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
+    .brand { font-weight:900; letter-spacing:.02em; color:var(--accent); }
+    nav { display:flex; gap:10px; flex-wrap:wrap; }
+    nav a { padding:8px 10px; border:1px solid rgba(255,255,255,.10); border-radius:999px; color:rgba(255,255,255,.68); font-weight:700; }
+    nav a:hover { border-color:var(--accent); color:var(--accent); }
+
+    .shell { max-width:1100px; margin:0 auto; padding:16px; }
+    .hero h1 { margin:0; font-size:30px; }
+    .hero p { margin:8px 0 0 0; color:var(--muted); }
+
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:16px; }
+    @media (max-width: 900px) { .grid { grid-template-columns:1fr; } }
+
+    .card { border:1px solid rgba(90,221,238,.20); background:var(--panel); border-radius:16px; padding:14px; }
+    .card h2 { margin:0 0 10px 0; color:var(--accent); font-size:16px; }
+    .muted { color:var(--muted); font-size:13px; }
+
+    .form { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+    input, textarea, select { width:100%; border-radius:12px; padding:10px; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.03); color:var(--text); }
+    textarea { min-height:100px; resize:vertical; }
+
+    .row { display:flex; gap:10px; }
+    .row > * { flex:1; }
+
+    button { border:none; border-radius:999px; padding:10px 14px; font-weight:900; cursor:pointer; }
+    .primary { background:var(--accent); color:#050a15; }
+    .secondary { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.14); color:var(--text); }
+
+    .list { margin-top:12px; display:grid; gap:12px; }
+    .issue { border:1px solid rgba(255,255,255,.12); border-radius:16px; background:rgba(255,255,255,.02); padding:12px; }
+    .issue-top { display:flex; justify-content:space-between; gap:10px; }
+    .issue-title { margin:0; font-weight:900; }
+    .issue-meta { color:var(--muted); font-size:12px; margin-top:4px; }
   </style>
+
+  <!-- You fill this in when you deploy a real backend -->
+  <script>
+    window._civicHubSupabase = window._civicHubSupabase || {
+      url: 'YOUR_SUPABASE_URL',
+      anonKey: 'YOUR_SUPABASE_ANON_KEY'
+    };
+  </script>
+  <script src="app.js"></script>
 </head>
+
 <body>
-  <div class="wrap">
-    <header>
-      <strong>Civic Hub</strong>
+  <header>
+    <div class="top">
+      <div class="brand">Civic Hub</div>
       <nav>
         <a href="index.html">Home</a>
         <a href="issues.html">Issues</a>
@@ -31,155 +75,158 @@
         <a href="community.html">Community</a>
         <a href="petitions.html">Petitions</a>
         <a href="emergency-guidance.html">Emergency Guidance</a>
-        <a href="cin-model.html">CIN Model</a>
-        <a href="about.html">About</a>
       </nav>
-    </header>
+    </div>
+  </header>
 
-    <main>
-      <section class="card">
-        <h2>Identity</h2>
-        <div id="profileStatus">Loading...</div>
-        <form id="profileForm">
-          <input id="displayName" name="displayName" placeholder="Display name" autocomplete="name" required>
-          <button type="submit">Save identity</button>
+  <main class="shell">
+    <section class="hero">
+      <h1>Issues</h1>
+      <p>File issues and add notes. Your profile is used for attribution and feeds.</p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Your identity</h2>
+        <div id="profileStatus" class="muted">Loading…</div>
+
+        <form id="identityForm" class="form">
+          <input id="displayName" placeholder="Display name" autocomplete="name" required />
+          <button type="submit" class="primary">Save</button>
+          <a class="secondary" style="display:inline-block; padding:10px 14px; margin-top:6px" href="community.html">Open full profile</a>
         </form>
-        <button id="clearProfile" type="button">Clear identity</button>
-      </section>
+      </div>
 
-      <section class="card">
+      <div class="card">
         <h2>Report an issue</h2>
-        <form id="issueForm">
-          <select name="category" required>
-            <option value="">Category</option>
-            <option>Safety</option>
-            <option>Housing</option>
-            <option>Transportation</option>
-            <option>Public Services</option>
-            <option>Environment</option>
-            <option>Other</option>
-          </select>
-          <input name="title" placeholder="Title" required>
-          <textarea name="details" placeholder="Details"></textarea>
-          <input name="location" placeholder="Location (optional)">
-          <input name="contact" placeholder="Contact (optional)">
-          <button type="submit">Submit issue</button>
+        <p class="muted">(Demo) issues are saved locally.</p>
+
+        <form id="issueForm" class="form">
+          <div class="row">
+            <select id="category">
+              <option value="">Category</option>
+              <option value="Safety">Safety</option>
+              <option value="Housing">Housing</option>
+              <option value="Transit">Transit</option>
+              <option value="Education">Education</option>
+              <option value="Policy">Policy</option>
+              <option value="Other">Other</option>
+            </select>
+            <input id="title" placeholder="Issue title" required />
+          </div>
+          <input id="location" placeholder="Location (optional)" />
+          <textarea id="details" placeholder="Details"></textarea>
+          <button type="submit" class="primary">Submit issue</button>
         </form>
-      </section>
 
-      <section class="card">
-        <h2>Issue feed</h2>
-        <div id="issuesList"></div>
-      </section>
-    </main>
-  </div>
+        <div class="list" id="issueList"></div>
+      </div>
+    </section>
+  </main>
 
-  <script src="app.js"></script>
   <script>
-    const profileStatus = document.getElementById('profileStatus');
-    const displayName = document.getElementById('displayName');
+    (function(){
+      const civic = window.civicHub || {};
+      const profileApi = civic.profile;
+      const issuesApi = civic.issues;
 
-    function renderProfile() {
-      const p = civicHub.profile.getProfile();
-      profileStatus.textContent = p ? `Signed in as ${p.displayName}` : 'Not signed in';
-      displayName.value = p?.displayName || '';
-    }
+      const profileStatus = document.getElementById('profileStatus');
+      const identityForm = document.getElementById('identityForm');
+      const displayName = document.getElementById('displayName');
 
-    document.getElementById('profileForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = displayName.value.trim();
-      if (!name) return;
-      civicHub.profile.saveProfile({ displayName: name });
-      renderProfile();
-      renderIssues();
-    });
+      const issueList = document.getElementById('issueList');
+      const issueForm = document.getElementById('issueForm');
 
-    document.getElementById('clearProfile').addEventListener('click', () => {
-      civicHub.profile.clearProfile();
-      renderProfile();
-      renderIssues();
-    });
+      function safe(fn){ try { return fn(); } catch(e){ console.error(e); return undefined; } }
 
-    function renderIssues() {
-      const list = document.getElementById('issuesList');
-      const items = civicHub.issues.list();
-      list.innerHTML = '';
-
-      if (!items.length) {
-        list.innerHTML = '<p style="color: rgba(255,255,255,.68)">No issues yet.</p>';
-        return;
+      function renderIdentity(){
+        const me = safe(() => profileApi && profileApi.getCurrent());
+        if (me && me.displayName){
+          profileStatus.textContent = 'Signed in as: ' + me.displayName;
+          displayName.value = me.displayName;
+          return me;
+        } else {
+          profileStatus.innerHTML = 'No identity set. Save a display name here or open the full profile page.';
+          return null;
+        }
       }
 
-      const profile = civicHub.profile.getProfile();
-      for (const item of items) {
-        const notes = (item.notes || []).map((n) => `
-          <div style="margin-top:8px">
-            <span class="badge">${n.by || 'Anon'}</span>
-            <span style="color: rgba(255,255,255,.68)">${civicHub.fmtTime(n.createdAt)}</span>
-            <div style="margin-top:4px">${n.text || ''}</div>
-          </div>
-        `).join('');
+      function renderIssues(){
+        const list = safe(() => issuesApi && issuesApi.list()) || [];
+        issueList.innerHTML = '';
+        if (!list.length){
+          const div = document.createElement('div');
+          div.className = 'muted';
+          div.textContent = 'No issues yet.';
+          issueList.appendChild(div);
+          return;
+        }
+        for (const i of list){
+          const div = document.createElement('div');
+          div.className = 'issue';
+          const metaParts = [];
+          if (i.category) metaParts.push(i.category);
+          if (i.location) metaParts.push(i.location);
+          if (i.createdByName) metaParts.push('by ' + i.createdByName);
+          if (i.createdAt) metaParts.push(new Date(i.createdAt).toLocaleString());
 
-        const actions = profile
-          ? `<button data-action="note" data-id="${item.id}">Add note</button>`
-          : '<p style="color: rgba(255,255,255,.68)">Save an identity to add notes.</p>';
-
-        list.innerHTML += `
-          <div class="card">
-            <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-              <strong>${item.title}</strong>
-              <span class="badge">${item.category || 'General'}</span>
+          div.innerHTML = `
+            <div class="issue-top">
+              <p class="issue-title">${i.title || 'Untitled'}</p>
+              <span class="muted">${i.status || 'open'}</span>
             </div>
-            <div style="color: rgba(255,255,255,.68);margin-top:6px">${item.details || ''}</div>
-            <div class="hr"></div>
-            <div style="font-size:12px;color: rgba(255,255,255,.68)">
-              Reported by ${item.createdBy || 'Anonymous'} • ${civicHub.fmtTime(item.createdAt)} • Status: ${item.status}
-            </div>
-            ${notes}
-            <div style="margin-top:10px">${actions}</div>
-          </div>
-        `;
+            <div class="issue-meta">${metaParts.join(' • ')}</div>
+            <div class="muted" style="margin-top:6px; white-space:pre-wrap">${i.details || ''}</div>
+            <div class="muted" style="margin-top:8px">Notes: ${i.notes ? i.notes.length : 0}</div>
+            <button class="secondary" data-id="${i.id}">Add note</button>`;
+          issueList.appendChild(div);
+        }
       }
-    }
 
-    document.getElementById('issueForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const f = e.target;
-      const profile = civicHub.profile.getProfile();
-
-      civicHub.issues.add({
-        category: f.category.value,
-        title: f.title.value.trim(),
-        details: f.details.value.trim(),
-        location: f.location.value.trim(),
-        contact: f.contact.value.trim(),
-        createdBy: profile?.displayName || 'Anonymous',
+      identityForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = (displayName.value || '').trim();
+        if (!name){ alert('Display name required'); return; }
+        safe(() => profileApi && profileApi.saveCurrent({ displayName: name }));
+        renderIdentity();
+        alert('Identity saved locally.');
       });
 
-      f.reset();
-      renderIssues();
-    });
-
-    document.getElementById('issuesList').addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-action]');
-      if (!btn) return;
-
-      if (btn.dataset.action === 'note') {
-        const profile = civicHub.profile.getProfile();
-        if (!profile) {
-          alert('Save an identity first.');
+      issueForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const me = renderIdentity();
+        if (!me){
+          alert('Set your profile display name first.');
           return;
         }
 
-        const text = prompt('Add a note/update:');
-        if (!text) return;
-        civicHub.issues.addNote(btn.dataset.id, { text: text.trim(), by: profile.displayName });
-        renderIssues();
-      }
-    });
+        const title = (document.getElementById('title').value || '').trim();
+        if (!title){ alert('Title required'); return; }
 
-    renderProfile();
-    renderIssues();
+        safe(() => issuesApi && issuesApi.add({
+          category: document.getElementById('category').value || '',
+          title,
+          location: document.getElementById('location').value || '',
+          details: document.getElementById('details').value || '',
+        }));
+
+        issueForm.reset();
+        renderIssues();
+      });
+
+      issueList.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn || !btn.dataset.id) return;
+        const text = prompt('Add a note');
+        if (!text) return;
+        safe(() => issuesApi && issuesApi.addNote(btn.dataset.id, text));
+        renderIssues();
+      });
+
+      renderIdentity();
+      renderIssues();
+    })();
   </script>
+
 </body>
 </html>
