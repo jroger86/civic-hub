@@ -1,47 +1,30 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Civic Hub - Petitions</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Civic Hub — Petitions</title>
   <style>
-    :root{
-      --bg:#070d1f;
-      --ink:#eaf6ff;
-      --muted:rgba(234,246,255,.72);
-      --line:rgba(234,246,255,.14);
-      --accent:#5addee;
-    }
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(1200px 800px at 20% 20%,rgba(90,221,255,.14),transparent 55%),linear-gradient(180deg,#050814,#070d1f);color:var(--ink);min-height:100vh;}
-    .topbar{position:sticky;top:0;z-index:10;background:rgba(7,13,31,.70);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
-    .topbar .row{display:flex;align-items:center;gap:16px;padding:10px 18px;}
-    .brand{font-weight:800;letter-spacing:.6px;}
-    nav{display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
-    nav a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:999px;transition:background .2s,color .2s;}
-    nav a:hover{background:rgba(90,221,255,.14);color:var(--ink);}    
-    .cta{margin-left:auto;padding:9px 12px;border-radius:12px;border:1px solid rgba(90,221,255,.3);background:rgba(90,221,255,.10);color:var(--accent);cursor:pointer;}
-    .cta:hover{background:rgba(90,221,255,.18);}    
-    main{max-width:980px;margin:0 auto;padding:22px 18px 80px;}
-    h1,h2{margin:0 0 12px;}
-    p{margin:0 0 16px;color:var(--muted);}
-    .card{border:1px solid var(--line);border-radius:18px;padding:18px;background:rgba(255,255,255,.02);box-shadow:0 24px 80px rgba(0,0,0,.25);}    
-    .grid{display:grid;grid-template-columns:1fr;gap:14px;}
-    @media (min-width:820px){
-      .grid{grid-template-columns:1fr 1fr;}
-    }
-    form{display:grid;gap:12px;}
-    input,textarea,select{padding:10px 10px;border-radius:12px;border:1px solid rgba(234,246,255,.16);background:rgba(255,255,255,.03);color:var(--ink);}    
-    textarea{min-height:120px;resize:vertical;}
-    select{color:var(--ink);} /* ensure readable */
-    select option{color:#070d1f;background:#fff;}
-    .footerNote{margin-top:18px;color:var(--muted);font-size:13px;}
+    body{margin:0;font-family:system-ui;background:#050815;color:rgba(255,255,255,.92)}
+    a{color:#5addee;text-decoration:none}
+    header{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px;border-bottom:1px solid rgba(90,221,255,.25)}
+    nav{display:flex;gap:8px;flex-wrap:wrap}
+    nav a{padding:8px 10px;border:1px solid rgba(255,255,255,.10);border-radius:999px;color:rgba(255,255,255,.68)}
+    nav a:hover{border-color:#5addee;color:#5addee}
+    .wrap{max-width:1100px;margin:0 auto;padding:14px}
+    .card{border:1px solid rgba(90,221,255,.25);background:rgba(255,255,255,.04);border-radius:16px;padding:14px;margin-top:12px}
+    input,textarea,select{width:100%;margin-top:10px;border-radius:12px;padding:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03);color:rgba(255,255,255,.92)}
+    textarea{min-height:90px}
+    button{margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(90,221,255,.10);color:#5addee;cursor:pointer}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.2);font-size:12px;color:rgba(255,255,255,.68)}
+    .hr{height:1px;background:rgba(255,255,255,.1);margin:12px 0}
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="row">
-      <div class="brand">Civic Hub</div>
-      <nav aria-label="Primary">
+  <div class="wrap">
+    <header>
+      <strong>Civic Hub</strong>
+      <nav>
         <a href="index.html">Home</a>
         <a href="issues.html">Issues</a>
         <a href="live-debate.html">Live Debate</a>
@@ -51,38 +34,160 @@
         <a href="cin-model.html">CIN Model</a>
         <a href="about.html">About</a>
       </nav>
-      <a class="cta" href="issues.html">Post issue</a>
-    </div>
-  </header>
+    </header>
 
-  <main>
-    <section class="card">
-      <h1>Petitions</h1>
-      <p>Turn community consensus into clear, trackable action items. Petitions are lightweight and public: they help citizens signal priorities without requiring a full “campaign” team.</p>
-    </section>
-
-    <section class="grid" style="margin-top:14px;">
-      <article class="card">
-        <h2>Start a petition</h2>
-        <form onsubmit="alert('Prototype: Petition created (local only).');this.reset();return false;">
-          <input type="text" name="title" placeholder="Petition title" required />
-          <textarea name="summary" placeholder="Short summary" required></textarea>
-          <input type="text" name="location" placeholder="City / district" />
-          <button type="submit" class="cta">Create</button>
+    <main>
+      <section class="card">
+        <h2>Identity</h2>
+        <div id="profileStatus">Loading...</div>
+        <form id="profileForm">
+          <input id="displayName" name="displayName" placeholder="Display name" autocomplete="name" required>
+          <button type="submit">Save identity</button>
         </form>
-        <div class="footerNote">You can build validation + signatures storage later (backend / database). This is a prototype surface.</div>
-      </article>
+        <button id="clearProfile" type="button">Clear identity</button>
+      </section>
 
-      <article class="card">
-        <h2>Signature feed (sample)</h2>
-        <p>Once live, this section shows the “who + why” of support (with lightweight privacy controls) so residents can see real support trends.</p>
-        <ul style="margin:10px 0 0 18px;color:var(--muted);">
-          <li>Sara M — “Fix the traffic light timing at Main &amp; 5th.”</li>
-          <li>Miles L — “Add shaded bus shelters.”</li>
-          <li>Jo A — “Open data for city services response times.”</li>
-        </ul>
-      </article>
-    </section>
-  </main>
+      <section class="card">
+        <h2>Create a petition</h2>
+        <p style="color: rgba(255,255,255,.68)">Keep it short and specific. What’s the problem, and what do you want done?</p>
+        <form id="petitionForm">
+          <input name="title" placeholder="Petition title" required>
+          <textarea name="problem" placeholder="Describe the problem"></textarea>
+          <textarea name="request" placeholder="Describe the requested change"></textarea>
+          <input name="issueRef" placeholder="Related issue ID or link (optional)">
+          <input name="budgetRef" placeholder="Related budget item (optional)">
+          <button type="submit">Publish petition</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Petitions</h2>
+        <div id="petitionsList"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const profileStatus = document.getElementById('profileStatus');
+    const displayName = document.getElementById('displayName');
+
+    function renderProfile() {
+      const p = civicHub.profile.getProfile();
+      profileStatus.textContent = p ? `Signed in as ${p.displayName}` : 'Not signed in';
+      displayName.value = p?.displayName || '';
+    }
+
+    document.getElementById('profileForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = displayName.value.trim();
+      if (!name) return;
+      civicHub.profile.saveProfile({ displayName: name });
+      renderProfile();
+      renderPetitions();
+    });
+
+    document.getElementById('clearProfile').addEventListener('click', () => {
+      civicHub.profile.clearProfile();
+      renderProfile();
+      renderPetitions();
+    });
+
+    function renderPetitions() {
+      const list = document.getElementById('petitionsList');
+      const items = civicHub.petitions.list();
+      list.innerHTML = '';
+
+      if (!items.length) {
+        list.innerHTML = '<p style="color: rgba(255,255,255,.68)">No petitions yet.</p>';
+        return;
+      }
+
+      const profile = civicHub.profile.getProfile();
+
+      for (const item of items) {
+        const sigs = item.signatures || [];
+        const signed = profile ? sigs.some(s => s.userId === profile.id) : false;
+        const sigNames = sigs.slice(0, 3).map(s => s.name || 'Anon').join(', ');
+        const more = sigs.length > 3 ? ` +${sigs.length - 3}` : '';
+
+        const actions = profile
+          ? (signed
+              ? '<span class="badge">Signed</span>'
+              : `<button data-action="sign" data-id="${item.id}">Sign petition</button>`)
+          : '<p style="color: rgba(255,255,255,.68)">Save an identity to sign petitions.</p>';
+
+        list.innerHTML += `
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+              <strong>${item.title}</strong>
+              <span class="badge">${sigs.length} signatures</span>
+            </div>
+            <div style="color: rgba(255,255,255,.68);margin-top:6px">
+              ${item.problem || ''}
+            </div>
+            <div class="hr"></div>
+            <div style="color: rgba(255,255,255,.68)">
+              Requested change: ${item.request || ''}
+            </div>
+            <div style="font-size:12px;color: rgba(255,255,255,.68);margin-top:10px">
+              Related: ${item.issueRef || '—'} • Budget: ${item.budgetRef || '—'}
+            </div>
+            <div style="font-size:12px;color: rgba(255,255,255,.68);margin-top:4px">
+              Created by ${item.createdBy || 'Anonymous'} • ${civicHub.fmtTime(item.createdAt)}
+            </div>
+            <div style="font-size:12px;color: rgba(255,255,255,.68);margin-top:6px">
+              Recent signatures: ${sigNames || '—'}${more}
+            </div>
+            <div style="margin-top:10px">${actions}</div>
+          </div>`;
+      }
+    }
+
+    document.getElementById('petitionForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const profile = civicHub.profile.getProfile();
+
+      civicHub.petitions.add({
+        title: f.title.value.trim(),
+        problem: f.problem.value.trim(),
+        request: f.request.value.trim(),
+        issueRef: f.issueRef.value.trim(),
+        budgetRef: f.budgetRef.value.trim(),
+        createdBy: profile?.displayName || 'Anonymous',
+      });
+
+      f.reset();
+      renderPetitions();
+    });
+
+    document.getElementById('petitionsList').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+
+      if (btn.dataset.action === 'sign') {
+        const profile = civicHub.profile.getProfile();
+        if (!profile) {
+          alert('Save an identity first.');
+          return;
+        }
+
+        const ok = civicHub.petitions.sign(btn.dataset.id, {
+          userId: profile.id,
+          name: profile.displayName,
+        });
+
+        if (!ok) {
+          alert('You have already signed this petition.');
+        }
+
+        renderPetitions();
+      }
+    });
+
+    renderProfile();
+    renderPetitions();
+  </script>
 </body>
 </html>
