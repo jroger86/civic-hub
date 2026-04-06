@@ -12,10 +12,12 @@
     nav a{padding:8px 10px;border:1px solid rgba(255,255,255,.10);border-radius:999px;color:rgba(255,255,255,.68)}
     nav a:hover{border-color:#5addee;color:#5addee}
     .wrap{max-width:1100px;margin:0 auto;padding:14px}
-    .card{border:1px solid rgba(90,221,255,.25);background:rgba(255,255,255,.04);border-radius:16px;padding:14px}
-    input,textarea,select{width:100%;margin-top:10px;border-radius:12px;padding:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03);color:white}
-    select option{color:#070d1f;background:#fff}
-    button{margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(90,221,255,.10);color:#5addee}
+    .card{border:1px solid rgba(90,221,255,.25);background:rgba(255,255,255,.04);border-radius:16px;padding:14px;margin-top:12px}
+    input,textarea,select{width:100%;margin-top:10px;border-radius:12px;padding:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03);color:rgba(255,255,255,.92)}
+    textarea{min-height:90px}
+    button{margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(90,221,255,.10);color:#5addee;cursor:pointer}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.2);font-size:12px;color:rgba(255,255,255,.68)}
+    .hr{height:1px;background:rgba(255,255,255,.1);margin:12px 0}
   </style>
 </head>
 <body>
@@ -35,30 +37,149 @@
     </header>
 
     <main>
-      <h1>Report an Issue</h1>
-      <p style="color:rgba(255,255,255,.68)">This is the community issue intake lane (demo).</p>
+      <section class="card">
+        <h2>Identity</h2>
+        <div id="profileStatus">Loading...</div>
+        <form id="profileForm">
+          <input id="displayName" name="displayName" placeholder="Display name" autocomplete="name" required>
+          <button type="submit">Save identity</button>
+        </form>
+        <button id="clearProfile" type="button">Clear identity</button>
+      </section>
 
       <section class="card">
-        <label>Category</label>
-        <select>
-          <option value="">Select…</option>
-          <option>Safety</option>
-          <option>Infrastructure</option>
-          <option>Health</option>
-          <option>Environment</option>
-          <option>Other</option>
-        </select>
-        <label>Title</label>
-        <input type="text" placeholder="Short title" />
-        <label>Details</label>
-        <textarea rows="4" placeholder="What’s happening?" ></textarea>
-        <label>Location</label>
-        <input type="text" placeholder="Neighborhood / address (approx)" />
-        <label>Contact (optional)</label>
-        <input type="text" placeholder="Email / phone" />
-        <button type="button" onclick="alert('Prototype: issue submitted (local-only demo).')">Submit issue</button>
+        <h2>Report an issue</h2>
+        <form id="issueForm">
+          <select name="category" required>
+            <option value="">Category</option>
+            <option>Safety</option>
+            <option>Housing</option>
+            <option>Transportation</option>
+            <option>Public Services</option>
+            <option>Environment</option>
+            <option>Other</option>
+          </select>
+          <input name="title" placeholder="Title" required>
+          <textarea name="details" placeholder="Details"></textarea>
+          <input name="location" placeholder="Location (optional)">
+          <input name="contact" placeholder="Contact (optional)">
+          <button type="submit">Submit issue</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Issue feed</h2>
+        <div id="issuesList"></div>
       </section>
     </main>
   </div>
+
+  <script src="app.js"></script>
+  <script>
+    const profileStatus = document.getElementById('profileStatus');
+    const displayName = document.getElementById('displayName');
+
+    function renderProfile() {
+      const p = civicHub.profile.getProfile();
+      profileStatus.textContent = p ? `Signed in as ${p.displayName}` : 'Not signed in';
+      displayName.value = p?.displayName || '';
+    }
+
+    document.getElementById('profileForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = displayName.value.trim();
+      if (!name) return;
+      civicHub.profile.saveProfile({ displayName: name });
+      renderProfile();
+      renderIssues();
+    });
+
+    document.getElementById('clearProfile').addEventListener('click', () => {
+      civicHub.profile.clearProfile();
+      renderProfile();
+      renderIssues();
+    });
+
+    function renderIssues() {
+      const list = document.getElementById('issuesList');
+      const items = civicHub.issues.list();
+      list.innerHTML = '';
+
+      if (!items.length) {
+        list.innerHTML = '<p style="color: rgba(255,255,255,.68)">No issues yet.</p>';
+        return;
+      }
+
+      const profile = civicHub.profile.getProfile();
+      for (const item of items) {
+        const notes = (item.notes || []).map((n) => `
+          <div style="margin-top:8px">
+            <span class="badge">${n.by || 'Anon'}</span>
+            <span style="color: rgba(255,255,255,.68)">${civicHub.fmtTime(n.createdAt)}</span>
+            <div style="margin-top:4px">${n.text || ''}</div>
+          </div>
+        `).join('');
+
+        const actions = profile
+          ? `<button data-action="note" data-id="${item.id}">Add note</button>`
+          : '<p style="color: rgba(255,255,255,.68)">Save an identity to add notes.</p>';
+
+        list.innerHTML += `
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+              <strong>${item.title}</strong>
+              <span class="badge">${item.category || 'General'}</span>
+            </div>
+            <div style="color: rgba(255,255,255,.68);margin-top:6px">${item.details || ''}</div>
+            <div class="hr"></div>
+            <div style="font-size:12px;color: rgba(255,255,255,.68)">
+              Reported by ${item.createdBy || 'Anonymous'} • ${civicHub.fmtTime(item.createdAt)} • Status: ${item.status}
+            </div>
+            ${notes}
+            <div style="margin-top:10px">${actions}</div>
+          </div>
+        `;
+      }
+    }
+
+    document.getElementById('issueForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const profile = civicHub.profile.getProfile();
+
+      civicHub.issues.add({
+        category: f.category.value,
+        title: f.title.value.trim(),
+        details: f.details.value.trim(),
+        location: f.location.value.trim(),
+        contact: f.contact.value.trim(),
+        createdBy: profile?.displayName || 'Anonymous',
+      });
+
+      f.reset();
+      renderIssues();
+    });
+
+    document.getElementById('issuesList').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+
+      if (btn.dataset.action === 'note') {
+        const profile = civicHub.profile.getProfile();
+        if (!profile) {
+          alert('Save an identity first.');
+          return;
+        }
+
+        const text = prompt('Add a note/update:');
+        if (!text) return;
+        civicHub.issues.addNote(btn.dataset.id, { text: text.trim(), by: profile.displayName });
+        renderIssues();
+      }
+    });
+
+    renderProfile();
+    renderIssues();
+  </script>
 </body>
 </html>
