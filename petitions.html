@@ -1,23 +1,25 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Civic Hub — Petitions</title>
   <style>
-    body{margin:0;font-family:system-ui;background:#050815;color:rgba(255,255,255,.92)}
-    a{color:#5addee;text-decoration:none}
-    header{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px;border-bottom:1px solid rgba(90,221,255,.25)}
-    nav{display:flex;gap:8px;flex-wrap:wrap}
-    nav a{padding:8px 10px;border:1px solid rgba(255,255,255,.10);border-radius:999px;color:rgba(255,255,255,.68)}
-    nav a:hover{border-color:#5addee;color:#5addee}
-    .wrap{max-width:1100px;margin:0 auto;padding:14px}
-    .card{border:1px solid rgba(90,221,255,.25);background:rgba(255,255,255,.04);border-radius:16px;padding:14px;margin-top:12px}
-    input,textarea,select{width:100%;margin-top:10px;border-radius:12px;padding:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03);color:rgba(255,255,255,.92)}
-    textarea{min-height:90px}
-    button{margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(90,221,255,.10);color:#5addee;cursor:pointer}
-    .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.2);font-size:12px;color:rgba(255,255,255,.68)}
-    .hr{height:1px;background:rgba(255,255,255,.1);margin:12px 0}
+    body { margin: 0; font-family: system-ui; background: #050815; color: rgba(255,255,255,.92); }
+    a { color:#5addee; text-decoration: none }
+    header { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; padding:14px; border-bottom:1px solid rgba(90,221,255,.25); }
+    nav { display:flex; gap:8px; flex-wrap:wrap; }
+    nav a { padding: 8px 10px; border: 1px solid rgba(255,255,255,.10); border-radius: 999px; color: rgba(255,255,255,.68); }
+    nav a:hover { border-color:#5addee; color:#5addee; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 14px; }
+    .card { border:1px solid rgba(90,221,255,.25); background: rgba(255,255,255,.04); border-radius:16px; padding:14px; margin-top:12px; }
+    input, textarea, select { width: 100%; margin-top: 10px; border-radius: 12px; padding: 10px; border:1px solid rgba(255,255,255,.15); background: rgba(255,255,255,.03); color: rgba(255,255,255,.9); }
+    textarea { min-height: 90px; }
+    button { margin-top: 12px; padding: 10px 12px; border-radius: 12px; border:1px solid rgba(255,255,255,.18); background: rgba(90,221,255,.10); color:#5addee; cursor:pointer; }
+    .badge { display:inline-block; padding: 2px 8px; border-radius: 999px; border:1px solid rgba(255,255,255,.2); font-size: 12px; color: rgba(255,255,255,.68); }
+    .hr { height:1px; background: rgba(255,255,255,.1); margin:12px 0; }
+    .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .small { font-size: 13px; color: rgba(255,255,255,.65); }
   </style>
 </head>
 <body>
@@ -41,153 +43,152 @@
         <h2>Identity</h2>
         <div id="profileStatus">Loading...</div>
         <form id="profileForm">
-          <input id="displayName" name="displayName" placeholder="Display name" autocomplete="name" required>
+          <input id="displayName" name="displayName" placeholder="Display name" autocomplete="name" required />
           <button type="submit">Save identity</button>
         </form>
-        <button id="clearProfile" type="button">Clear identity</button>
       </section>
 
       <section class="card">
-        <h2>Create a petition</h2>
-        <p style="color: rgba(255,255,255,.68)">Keep it short and specific. What’s the problem, and what do you want done?</p>
+        <h2>Start a petition</h2>
         <form id="petitionForm">
-          <input name="title" placeholder="Petition title" required>
-          <textarea name="problem" placeholder="Describe the problem"></textarea>
-          <textarea name="request" placeholder="Describe the requested change"></textarea>
-          <input name="issueRef" placeholder="Related issue ID or link (optional)">
-          <input name="budgetRef" placeholder="Related budget item (optional)">
+          <input id="title" name="title" placeholder="Title" required />
+          <textarea id="problem" name="problem" placeholder="Problem (what’s happening?)"></textarea>
+          <textarea id="requestedChange" name="requestedChange" placeholder="Requested change (what needs to happen?)"></textarea>
+          <div class="row">
+            <input id="relatedIssueId" name="relatedIssueId" placeholder="Related issue ID (optional)" />
+            <input id="relatedBudgetRef" name="relatedBudgetRef" placeholder="Related budget ref (optional)" />
+          </div>
           <button type="submit">Publish petition</button>
+          <div class="small">Note: petitions are stored in this device’s storage unless you also publish your profile to a configured server.</div>
         </form>
       </section>
 
       <section class="card">
         <h2>Petitions</h2>
-        <div id="petitionsList"></div>
+        <div id="petitionsList">Loading...</div>
+      </section>
+
+      <section class="card">
+        <h2>Issues (for reference)</h2>
+        <div id="issuesRef">Loading...</div>
       </section>
     </main>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    window._civicHubSupabase = window._civicHubSupabase || { url: '', anonKey: '' };
+  </script>
   <script src="app.js"></script>
   <script>
-    const profileStatus = document.getElementById('profileStatus');
-    const displayName = document.getElementById('displayName');
+    const profileApi = civicHub.profile;
+    const petitionsApi = civicHub.petitions;
+    const issuesApi = civicHub.issues;
 
-    function renderProfile() {
-      const p = civicHub.profile.getProfile();
-      profileStatus.textContent = p ? `Signed in as ${p.displayName}` : 'Not signed in';
-      displayName.value = p?.displayName || '';
+    function refreshProfile() {
+      const status = document.getElementById('profileStatus');
+      const profile = profileApi.getCurrent();
+      if (!profile || !profile.displayName) {
+        status.textContent = 'Not saved — set a display name to participate.';
+        return;
+      }
+      status.textContent = `Signed in as ${profile.displayName}`;
+      const el = document.getElementById('displayName');
+      if (el && !el.value) el.value = profile.displayName;
     }
+
+    function renderPetitions() {
+      const container = document.getElementById('petitionsList');
+      const petitions = petitionsApi.list();
+      if (!petitions.length) {
+        container.textContent = 'No petitions yet — start one.';
+        return;
+      }
+      container.innerHTML = petitions.map(p => {
+        const sigCount = (p.signatures || []).length;
+        return `<div class="hr"></div>
+          <div class="row">
+            <div>
+              <strong>${civicHub.util.escapeHtml(p.title)}</strong>
+              <div class="small">by ${civicHub.util.escapeHtml(p.createdByName || 'Unknown')} · ${civicHub.util.escapeHtml(p.createdAt || '')}</div>
+            </div>
+            <span class="badge">${sigCount} signatures</span>
+          </div>
+          <div class="small">Issue: ${p.relatedIssueId ? civicHub.util.escapeHtml(p.relatedIssueId) : '—'} · Budget ref: ${p.relatedBudgetRef ? civicHub.util.escapeHtml(p.relatedBudgetRef) : '—'}</div>
+          <button type="button" onclick="window.signPetition('${p.id}')">Sign petition</button>`;
+      }).join('');
+    }
+
+    function renderIssuesRef() {
+      const container = document.getElementById('issuesRef');
+      const issues = issuesApi.list();
+      if (!issues.length) {
+        container.textContent = 'No issues yet.';
+        return;
+      }
+      container.innerHTML = issues.slice(0, 10).map(i => {
+        return `<div class="hr"></div>
+          <div class="row">
+            <div>
+              <strong>${civicHub.util.escapeHtml(i.title || '(Untitled)')}</strong>
+              <div class="small">ID: ${civicHub.util.escapeHtml(i.id || '')}</div>
+            </div>
+            <div class="small">${civicHub.util.escapeHtml(i.createdAt || '')}</div>
+          </div>`;
+      }).join('');
+    }
+
+    window.signPetition = function (id) {
+      const profile = profileApi.getCurrent();
+      if (!profile || !profile.displayName) {
+        alert('Save your identity first (display name).');
+        return;
+      }
+      const ok = petitionsApi.sign(id);
+      if (!ok) {
+        alert('You already signed this or the petition was not found.');
+        return;
+      }
+      renderPetitions();
+    };
 
     document.getElementById('profileForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = displayName.value.trim();
-      if (!name) return;
-      civicHub.profile.saveProfile({ displayName: name });
-      renderProfile();
+      const displayName = document.getElementById('displayName').value.trim();
+      if (!displayName) return;
+      profileApi.saveCurrent({ displayName });
+      refreshProfile();
       renderPetitions();
+      renderIssuesRef();
     });
-
-    document.getElementById('clearProfile').addEventListener('click', () => {
-      civicHub.profile.clearProfile();
-      renderProfile();
-      renderPetitions();
-    });
-
-    function renderPetitions() {
-      const list = document.getElementById('petitionsList');
-      const items = civicHub.petitions.list();
-      list.innerHTML = '';
-
-      if (!items.length) {
-        list.innerHTML = '<p style="color: rgba(255,255,255,.68)">No petitions yet.</p>';
-        return;
-      }
-
-      const profile = civicHub.profile.getProfile();
-
-      for (const item of items) {
-        const sigs = item.signatures || [];
-        const signed = profile ? sigs.some(s => s.userId === profile.id) : false;
-        const sigNames = sigs.slice(0, 3).map(s => s.name || 'Anon').join(', ');
-        const more = sigs.length > 3 ? ` +${sigs.length - 3}` : '';
-
-        const actions = profile
-          ? (signed
-              ? '<span class="badge">Signed</span>'
-              : `<button data-action="sign" data-id="${item.id}">Sign petition</button>`)
-          : '<p style="color: rgba(255,255,255,.68)">Save an identity to sign petitions.</p>';
-
-        list.innerHTML += `
-          <div class="card">
-            <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-              <strong>${item.title}</strong>
-              <span class="badge">${sigs.length} signatures</span>
-            </div>
-            <div style="color: rgba(255,255,255,.68);margin-top:6px">
-              ${item.problem || ''}
-            </div>
-            <div class="hr"></div>
-            <div style="color: rgba(255,255,255,.68)">
-              Requested change: ${item.request || ''}
-            </div>
-            <div style="font-size:12px;color: rgba(255,255,255,.68);margin-top:10px">
-              Related: ${item.issueRef || '—'} • Budget: ${item.budgetRef || '—'}
-            </div>
-            <div style="font-size:12px;color: rgba(255,255,255,.68);margin-top:4px">
-              Created by ${item.createdBy || 'Anonymous'} • ${civicHub.fmtTime(item.createdAt)}
-            </div>
-            <div style="font-size:12px;color: rgba(255,255,255,.68);margin-top:6px">
-              Recent signatures: ${sigNames || '—'}${more}
-            </div>
-            <div style="margin-top:10px">${actions}</div>
-          </div>`;
-      }
-    }
 
     document.getElementById('petitionForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      const f = e.target;
-      const profile = civicHub.profile.getProfile();
-
-      civicHub.petitions.add({
-        title: f.title.value.trim(),
-        problem: f.problem.value.trim(),
-        request: f.request.value.trim(),
-        issueRef: f.issueRef.value.trim(),
-        budgetRef: f.budgetRef.value.trim(),
-        createdBy: profile?.displayName || 'Anonymous',
+      const profile = profileApi.getCurrent();
+      if (!profile || !profile.displayName) {
+        alert('Save your identity first (display name).');
+        return;
+      }
+      const title = document.getElementById('title').value.trim();
+      if (!title) return;
+      petitionsApi.add({
+        title,
+        problem: document.getElementById('problem').value.trim(),
+        requestedChange: document.getElementById('requestedChange').value.trim(),
+        relatedIssueId: document.getElementById('relatedIssueId').value.trim(),
+        relatedBudgetRef: document.getElementById('relatedBudgetRef').value.trim(),
       });
-
-      f.reset();
+      e.target.reset();
       renderPetitions();
     });
 
-    document.getElementById('petitionsList').addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-action]');
-      if (!btn) return;
+    const params = new URL(window.location.href).searchParams;
+    const issuePrefill = params.get('issue') || params.get('relatedIssueId');
+    if (issuePrefill) document.getElementById('relatedIssueId').value = issuePrefill;
 
-      if (btn.dataset.action === 'sign') {
-        const profile = civicHub.profile.getProfile();
-        if (!profile) {
-          alert('Save an identity first.');
-          return;
-        }
-
-        const ok = civicHub.petitions.sign(btn.dataset.id, {
-          userId: profile.id,
-          name: profile.displayName,
-        });
-
-        if (!ok) {
-          alert('You have already signed this petition.');
-        }
-
-        renderPetitions();
-      }
-    });
-
-    renderProfile();
+    refreshProfile();
     renderPetitions();
+    renderIssuesRef();
   </script>
 </body>
 </html>
