@@ -1,1 +1,81 @@
-<a href>"form.frm"</a>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Civic Hub - Sign up</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Sign up</h1>
+    <p>Create your Civic Hub profile so you can post, petition, and show up in the community directory.</p>
+
+    <form id="signupForm">
+      <label>Name
+        <input type="text" name="displayName" required />
+      </label>
+      <label>Handle
+        <input type="text" name="handle" required />
+      </label>
+      <label>Email (optional)
+        <input type="email" name="contactEmail" />
+      </label>
+      <label>Phone (optional)
+        <input type="tel" name="contactPhone" />
+      </label>
+      <label>Bio
+        <textarea name="bio" rows="3"></textarea>
+      </label>
+      <label>
+        <input type="checkbox" name="isPublic" checked /> Make my profile public
+      </label>
+      <button type="submit">Create profile</button>
+    </form>
+
+    <p id="result"></p>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    const civic = window.civicHub || window.civic || window.hub;
+    const form = document.getElementById('signupForm');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!civic?.profile?.saveCurrent) {
+        result.textContent = 'Missing app.js civic client. Please reload.';
+        return;
+      }
+
+      const profileInput = {
+        displayName: form.displayName.value.trim(),
+        handle: form.handle.value.trim(),
+        contactEmail: form.contactEmail.value.trim() || null,
+        contactPhone: form.contactPhone.value.trim() || null,
+        bio: form.bio.value.trim() || '',
+        isPublic: form.isPublic.checked,
+      };
+
+      const profile = civic.profile.saveCurrent(profileInput);
+      result.textContent = 'Profile saved locally.';
+
+      // Best effort server save if configured
+      try {
+        if (civic?.profile?.saveCurrentToServer) {
+          const response = await civic.profile.saveCurrentToServer({ ...profileInput, id: profile.id });
+          if (response?.error) result.textContent += ' (server save failed)';
+          if (response?.ok) result.textContent += ' (saved to server)';
+        }
+      } catch (_) {
+        result.textContent += ' (server save failed)';
+      }
+
+      setTimeout(() => {
+        window.location.href = 'community.html';
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
