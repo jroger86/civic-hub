@@ -1,10 +1,14 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Civic Hub - Sign up</title>
 
+    <!-- Base theme (dark gradient, burgundy + gold, hints of white) -->
+    <link rel="stylesheet" href="theme.css" />
+
+    <!-- Lightweight forms styling -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
@@ -12,90 +16,103 @@
 
     <style>
       :root {
-        --niners-red: #aa0000;
-        --niners-gold: #b3995d;
-
-        --pico-primary: var(--niners-red);
-        --pico-primary-hover: #8d0000;
-        --pico-primary-focus: #8d0000;
-      }
-
-      body {
-        margin: 0;
-        background: linear-gradient(180deg, #0a0f26, #070d1f);
-        color: #fff;
-      }
-
-      a {
-        color: var(--niners-gold);
+        --pico-primary: var(--burgundy);
+        --pico-primary-hover: #7a0e15;
+        --pico-primary-focus: #7a0e15;
       }
 
       main.container {
-        max-width: 720px;
+        max-width: 760px;
         margin: 0 auto;
-        padding: 32px 18px;
+        padding: 22px 18px 44px;
       }
 
-      textarea {
-        width: 100%;
+      form {
+        margin-top: 14px;
       }
 
-      button[type="submit"] {
-        background: linear-gradient(90deg, var(--niners-red), var(--niners-gold));
-        border: none;
-        color: #fff;
-        font-weight: 700;
-        border-radius: 999px;
-        padding: 10px 14px;
+      .helper {
+        margin-top: 10px;
+        color: rgba(255, 255, 255, 0.72);
       }
     </style>
   </head>
 
   <body>
+    <header class="topbar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Civic Hub</span>
+      </a>
+
+      <nav>
+        <a href="index.html" class="badge">Home</a>
+        <a href="issues.html" class="badge">Issues</a>
+        <a href="live-debate.html" class="badge">Live Debate</a>
+        <a href="community.html" class="badge">Community</a>
+        <a href="petitions.html" class="badge">Petitions</a>
+        <a href="emergency-guidance.html" class="badge">Emergency</a>
+        <a href="about.html" class="badge">About</a>
+        <a href="signup.html" class="cta">Sign up</a>
+      </nav>
+    </header>
+
     <main class="container">
-      <h1>Sign up</h1>
-      <p>
-        Create your Civic Hub profile so you can post, petition, and show up in the
-        community directory.
-      </p>
+      <article class="card">
+        <h1>Join Civic Hub</h1>
+        <p class="helper">
+          Create a civic profile so you can comment on datasets, submit signals,
+          and propose what needs more investment.
+        </p>
 
-      <form id="signupForm">
-        <label>
-          Name
-          <input type="text" name="displayName" required />
-        </label>
+        <form id="signupForm">
+          <div class="grid">
+            <label>
+              Name
+              <input type="text" id="displayName" required />
+            </label>
 
-        <label>
-          Handle
-          <input type="text" name="handle" required />
-        </label>
+            <label>
+              Handle
+              <input type="text" id="handle" required />
+            </label>
 
-        <label>
-          Email (optional)
-          <input type="email" name="contactEmail" />
-        </label>
+            <label>
+              Email (optional)
+              <input type="email" id="contactEmail" />
+            </label>
 
-        <label>
-          Phone (optional)
-          <input type="tel" name="contactPhone" />
-        </label>
+            <label>
+              Phone (optional)
+              <input type="tel" id="contactPhone" />
+            </label>
+          </div>
 
-        <label>
-          Bio
-          <textarea name="bio" rows="3"></textarea>
-        </label>
+          <label>
+            Bio (optional)
+            <textarea id="bio" rows="4"></textarea>
+          </label>
 
-        <label>
-          <input type="checkbox" name="isPublic" checked />
-          Make my profile public
-        </label>
+          <label>
+            <input type="checkbox" id="isPublic" checked />
+            Make profile public
+          </label>
 
-        <button type="submit">Create profile</button>
-      </form>
+          <button type="submit" class="cta">Create profile</button>
+        </form>
 
-      <p id="result"></p>
+        <p class="helper">
+          Note: prototype only. No data stored yet. Camera access remains
+          in-browser.
+        </p>
+      </article>
     </main>
 
-    <script src="app.js"></script>
+    <script>
+      document.getElementById("signupForm")?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("Demo: profile would be created here.");
+      });
+    </script>
   </body>
 </html>
