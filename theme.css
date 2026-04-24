@@ -193,3 +193,82 @@ a:hover {
     align-items: flex-start;
   }
 }
+
+/* Layout refresh */
+.topbar{
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.topbar nav{
+  width: 100%;
+  justify-content: center;
+}
+.topbar nav a{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(212,175,55,0.06);
+}
+.topbar nav a:hover{
+  background: rgba(212,175,55,0.12);
+}
+.sections.card{
+  margin-top: 16px;
+  padding-top: 18px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  box-shadow: none;
+}
+.sections.card ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.sections.card li{
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+.sections.card a{
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(10,10,14,0.55);
+  color: rgba(255,255,255,0.86);
+}
+.sections.card a:hover{
+  border-color: rgba(212,175,55,0.35);
+  color: var(--gold2);
+}
+.grid article.card:first-of-type,
+.grid article.card:last-of-type{
+  transform-style: preserve-3d;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.grid article.card:first-of-type{
+  transform-origin: left center;
+  transform: perspective(1200px) rotateY(8deg);
+}
+.grid article.card:last-of-type{
+  transform-origin: right center;
+  transform: perspective(1200px) rotateY(-8deg);
+}
+.grid article.card:first-of-type:hover,
+.grid article.card:last-of-type:hover{
+  transform: perspective(1200px) rotateY(0deg) translateZ(6px);
+}
+@media (max-width: 960px){
+  .topbar{ align-items: center; }
+}
