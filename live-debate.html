@@ -4,91 +4,91 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Civic Hub – Live Debate</title>
+  <link rel="stylesheet" href="theme.css" />
   <style>
-    :root{--bg:#050a15;--panel:rgba(255,255,255,.03);--accent:#5addee;--text:rgba(255,255,255,.88);--muted:rgba(255,255,255,.72);}
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:System, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif}
-    a{color:var(--accent);text-decoration:none}
-    .top{position:sticky;top:0;background:rgba(5,10,21,.9);backdrop-filter:blur(8px);z-index:5;border-bottom:1px solid rgba(90,221,238,.25);}
-    .top-inner{max-width:1200px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:18px}
-    .brand a{font-weight:900;letter-spacing:.02em;color:var(--accent)}
-    .nav{display:flex;flex-wrap:wrap;gap:14px;flex:1}
-    .nav a{color:var(--muted);font-weight:650}
-    .nav a:hover,.nav a[aria-current="page"]{color:var(--accent)}
-    .post{padding:8px 12px;border-radius:999px;background:var(--accent);color:#050a15;font-weight:900}
-    .shell{max-width:1200px;margin:0 auto;padding:24px 20px}
-    .hero{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
-    .hero h1{margin:0;font-size:34px;line-height:1.1}
-    .hero p{margin:0;color:var(--muted)}
-    .arena{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px}
-    .pane{flex:1;min-width:340px;border:1px solid rgba(90,221,238,.15);border-radius:16px;background:var(--panel);padding:16px}
-    .pane h2{margin:0 0 10px 0;color:var(--accent)}
-    video{width:100%;height:320px;border-radius:12px;background:rgba(0,0,0,.35);object-fit:cover}
-    .card{border:1px solid rgba(90,221,238,.15);background:var(--panel);border-radius:16px;padding:16px;margin-top:16px}
-    button{border:none;border-radius:999px;padding:10px 16px;background:var(--accent);color:#050a15;font-weight:900;cursor:pointer}
-    button:hover{opacity:.92}
-    .foot{padding:30px 20px;color:rgba(255,255,255,.55);text-align:center}
-    select option{color:#070d1f;background:#fff}
+    video.feed {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      height: auto;
+      border-radius: 18px;
+      background: rgba(0, 0, 0, .45);
+      object-fit: cover;
+      display: block;
+    }
+    .card-footer {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      color: rgba(245, 245, 245, .72);
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
-<header class="top">
-  <div class="top-inner">
-    <div class="brand"><a href="index.html">Civic Hub</a></div>
-    <nav class="nav" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="issues.html">Issues</a>
-      <a href="live-debate.html" aria-current="page">Live Debate</a>
-      <a href="community.html">Community</a>
-      <a href="petitions.html">Petitions</a>
-      <a href="emergency-guidance.html">Emergency Guidance</a>
-      <a href="cin-model.html">CIN Model</a>
-      <a href="about.html">About</a>
-    </nav>
-    <a class="post" href="issues.html">Post Issue</a>
-  </div>
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span>Civic Hub</span>
+  </a>
+
+  <nav aria-label="Primary">
+    <a href="index.html" class="badge">Home</a>
+    <a href="issues.html" class="badge">Issues</a>
+    <a href="live-debate.html" class="badge" aria-current="page">Live Debate</a>
+    <a href="community.html" class="badge">Community</a>
+    <a href="petitions.html" class="badge">Petitions</a>
+    <a href="emergency-guidance.html" class="badge">Emergency</a>
+    <a href="about.html" class="badge">About</a>
+    <a href="signup.html" class="cta">Sign up</a>
+  </nav>
 </header>
 
-<main class="shell">
+<main class="container">
   <section class="hero">
     <h1>Live Debate</h1>
-    <p>Dual “browser feed” panels so you can demo a live debate experience without a backend.</p>
+    <p>Single-window demo feed intended to pair with notes, transcripts, and moderation (future features).</p>
   </section>
 
-  <section class="arena" aria-label="Debate arena">
-    <div class="pane">
-      <h2>Position A</h2>
-      <video id="feedA" autoplay playsinline muted></video>
-    </div>
-    <div class="pane">
-      <h2>Position B</h2>
-      <video id="feedB" autoplay playsinline muted></video>
-    </div>
-  </section>
+  <section class="grid" aria-label="Live debate demo">
+    <article class="card">
+      <h2>Debate feed</h2>
+      <video id="feed" class="feed" autoplay playsinline muted></video>
+      <div class="card-footer">
+        <button class="cta" onclick="startFeed()">Start feed</button>
+        <span>Demo-only; camera stays on-device.</span>
+      </div>
+    </article>
 
-  <section class="card">
-    <h3 style="margin:0 0 10px 0;">Demo controls</h3>
-    <p style="margin:0 0 10px 0;color:var(--muted);">Click Start to connect both panels to your camera. Works best over HTTPS (GitHub Pages).</p>
-    <button onclick="startFeeds()">Start feeds</button>
+    <article class="card">
+      <h2>Notes</h2>
+      <p>Use this panel for topic prompts, talking points, or a future AI-generated transcript.</p>
+      <ul>
+        <li>Topic: city budgets + accountability</li>
+        <li>Goal: surfacing the top citizen concerns</li>
+        <li>Future: commenting on budget items with context</li>
+      </ul>
+    </article>
   </section>
 </main>
 
-<footer class="foot">Civic Hub prototype — everyday & crisis.</footer>
+<footer class="footer">Civic Hub prototype — everyday &amp; crisis.</footer>
 
 <script>
-async function startFeeds() {
-  const a = document.getElementById('feedA');
-  const b = document.getElementById('feedB');
+let feedStream;
+async function startFeed() {
+  if (feedStream) return;
+  const video = document.getElementById('feed');
   if (!navigator.mediaDevices?.getUserMedia) {
     alert('Camera access not supported in this browser.');
     return;
   }
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-    a.srcObject = stream;
-    b.srcObject = stream.clone();
+    feedStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    video.srcObject = feedStream;
   } catch (err) {
-    alert('Allow camera to demo feeds.');
+    alert('Allow camera to demo the feed.');
   }
 }
 </script>
